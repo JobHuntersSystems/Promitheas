@@ -6,10 +6,6 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-// Valores dummy para arrancar. Luego los moveremos a un archivo .env
-const supabaseUrl = 'TU_SUPABASE_URL';
-const supabaseAnonKey = 'TU_SUPABASE_ANON_KEY';
-
 void main() async {
   // Aseguramos que los bindings de Flutter estén listos antes de código asíncrono
   WidgetsFlutterBinding.ensureInitialized();
