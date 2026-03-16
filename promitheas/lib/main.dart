@@ -17,7 +17,7 @@ void main() async {
   if (supabaseUrl == null || supabaseAnonKey == null) {
     throw Exception('Supabase credentials not found in .env file.');
   }
-  // Inicializamos la conexión OLTP
+  // Inicializamos la conexión con supabase
   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   runApp(const ProviderScope(child: PromitheasApp()));
