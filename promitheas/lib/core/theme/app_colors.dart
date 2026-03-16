@@ -13,5 +13,5 @@ class AppColors {
   static const Color surfaceLight = Color(0xFFF8FAFC);
 
   // Grises para la barra de navegación inferior
-  static const Color navBarInactive = Color(0xFF94A3B8);
+  static const Color navBarInactive = Color.fromARGB(255, 202, 202, 202);
 }

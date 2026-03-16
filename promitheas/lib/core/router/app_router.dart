@@ -1,46 +1,62 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
+// 1. Rutas absolutas. Mucho más seguras y fáciles de leer.
+import 'package:promitheas/core/router/router_names.dart';
+import 'package:promitheas/features/home/views/home_screen.dart'; // <-- Ruta actualizada
+import 'package:promitheas/features/product_detail/views/product_detail_screen.dart'; // <-- Asumo que la moveremos aquí también
+
 // Llaves maestras para controlar qué parte de la pantalla se actualiza
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation:
-      '/home', // Arrancamos en Home para que veas la barra inferior (luego cambiaremos a /splash)
+  initialLocation: RouteNames
+      .home, // Arrancamos en Home para que veas la barra inferior (luego cambiaremos a /splash)
   routes: [
-    // Rutas sin barra inferior (Pantallas completas)
     GoRoute(
-      path: '/splash',
+      path: RouteNames.splash,
       builder: (context, state) =>
-          const Scaffold(body: Center(child: Text('Splash Screen'))),
+          const Scaffold(body: Center(child: Text('Splash'))),
     ),
     GoRoute(
-      path: '/login',
+      path: RouteNames.login,
       builder: (context, state) =>
           const Scaffold(body: Center(child: Text('Login'))),
     ),
     GoRoute(
-      path: '/register',
+      path: RouteNames.register,
       builder: (context, state) =>
           const Scaffold(body: Center(child: Text('Create User'))),
     ),
 
-    // Ruta con barra inferior (El menú principal con tus 5 pestañas)
+    // Ruta con barra inferior (El menú principal con tus 4 pestañas)
     StatefulShellRoute.indexedStack(
-      builder: (context, state, navigationShell) {
+      builder: (context, state, shell) {
         // Envolvemos el contenido en nuestro menú personalizado
-        return ScaffoldWithNavBar(navigationShell: navigationShell);
+        return ScaffoldWithNavBar(navigationShell: shell);
       },
       branches: [
-        // 0. Ubicación (Icono del Pin)
+        // 0. Home (Icono Casa - Pestaña central)
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/location',
-              builder: (context, state) =>
-                  const Scaffold(body: Center(child: Text('Ubicación'))),
+              path: RouteNames.home,
+              builder: (context, state) => const HomeScreen(),
+              // Sub-ruta para el detalle del producto (pantalla completa, oculta la barra)
+              routes: [
+                GoRoute(
+                  path: RouteNames.productDetail,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) {
+                    final id = state.pathParameters['id'] ?? '';
+                    return ProductDetailScreen(
+                      productId: id,
+                    ); // ← antes era Text(...)
+                  },
+                ),
+              ],
             ),
           ],
         ),
@@ -48,50 +64,27 @@ final appRouter = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/search',
+              path: RouteNames.search,
               builder: (context, state) =>
                   const Scaffold(body: Center(child: Text('Búsqueda'))),
             ),
           ],
         ),
-        // 2. Home (Icono Casa - Pestaña central)
+        // 2. Favoritos (Icono Bookmark)
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/home',
-              builder: (context, state) =>
-                  const Scaffold(body: Center(child: Text('Home - Gráficas'))),
-              // Sub-ruta para el detalle del producto (pantalla completa, oculta la barra)
-              routes: [
-                GoRoute(
-                  path: 'product/:id',
-                  parentNavigatorKey: _rootNavigatorKey,
-                  builder: (context, state) {
-                    final id = state.pathParameters['id'];
-                    return Scaffold(
-                      body: Center(child: Text('Detalle del producto: $id')),
-                    );
-                  },
-                ),
-              ],
-            ),
-          ],
-        ),
-        // 3. Favoritos (Icono Bookmark)
-        StatefulShellBranch(
-          routes: [
-            GoRoute(
-              path: '/favorites',
+              path: RouteNames.favorites,
               builder: (context, state) =>
                   const Scaffold(body: Center(child: Text('Favoritos'))),
             ),
           ],
         ),
-        // 4. Perfil (Icono Usuario)
+        // 3. Perfil (Icono Usuario)
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: '/profile',
+              path: RouteNames.profile,
               builder: (context, state) =>
                   const Scaffold(body: Center(child: Text('Perfil'))),
             ),
@@ -115,7 +108,6 @@ class ScaffoldWithNavBar extends StatelessWidget {
     return Scaffold(
       body: navigationShell,
       bottomNavigationBar: BottomNavigationBar(
-        // Leemos los colores que definimos en el AppTheme (el gris y el naranja)
         selectedItemColor: Theme.of(
           context,
         ).bottomNavigationBarTheme.selectedItemColor,
@@ -123,26 +115,33 @@ class ScaffoldWithNavBar extends StatelessWidget {
           context,
         ).bottomNavigationBarTheme.unselectedItemColor,
         currentIndex: navigationShell.currentIndex,
-        onTap: (int index) => _onTap(context, index),
+        onTap: (index) => navigationShell.goBranch(
+          index,
+          initialLocation: index == navigationShell.currentIndex,
+        ),
         items: const [
           BottomNavigationBarItem(
-            icon: Icon(Icons.location_on_outlined),
+            icon: Icon(Icons.home_outlined),
+            activeIcon: Icon(Icons.home),
             label: '',
           ),
-          BottomNavigationBarItem(icon: Icon(Icons.search), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.home_outlined), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.bookmark_border), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.person_outline), label: ''),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.search_outlined),
+            activeIcon: Icon(Icons.search),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.bookmark_outline),
+            activeIcon: Icon(Icons.bookmark),
+            label: '',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person_outline),
+            activeIcon: Icon(Icons.person),
+            label: '',
+          ),
         ],
       ),
-    );
-  }
-
-  void _onTap(BuildContext context, int index) {
-    // Al tocar un icono, le decimos a GoRouter que cambie de "rama"
-    navigationShell.goBranch(
-      index,
-      initialLocation: index == navigationShell.currentIndex,
     );
   }
 }
