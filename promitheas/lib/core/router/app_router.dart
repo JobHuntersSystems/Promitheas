@@ -1,20 +1,53 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-// 1. Rutas absolutas. Mucho más seguras y fáciles de leer.
 import 'package:promitheas/core/router/router_names.dart';
-import 'package:promitheas/features/home/views/home_screen.dart'; // <-- Ruta actualizada
-import 'package:promitheas/features/product_detail/views/product_detail_screen.dart'; // <-- Asumo que la moveremos aquí también
+import 'package:promitheas/features/auth/providers/auth_provider.dart';
+import 'package:promitheas/features/auth/views/login_screen.dart';
+import 'package:promitheas/features/home/views/home_screen.dart';
+import 'package:promitheas/features/product_detail/views/product_detail_screen.dart';
 
 // Llaves maestras para controlar qué parte de la pantalla se actualiza
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
-final appRouter = GoRouter(
-  navigatorKey: _rootNavigatorKey,
-  initialLocation: RouteNames
-      .home, // Arrancamos en Home para que veas la barra inferior (luego cambiaremos a /splash)
-  routes: [
+class _AuthRouterNotifier extends ChangeNotifier {
+  _AuthRouterNotifier(Ref ref) {
+    // Valor inicial sincrónico desde la sesión actual de Supabase
+    _isLoggedIn = Supabase.instance.client.auth.currentUser != null;
+    // Escucha cambios futuros de autenticación
+    ref.listen<AsyncValue<AuthState>>(authStateProvider, (_, next) {
+      final loggedIn = next.maybeWhen(
+        data: (s) => s.session != null,
+        orElse: () => _isLoggedIn,
+      );
+      if (_isLoggedIn != loggedIn) {
+        _isLoggedIn = loggedIn;
+        notifyListeners();
+      }
+    });
+  }
+
+  bool _isLoggedIn = false;
+  bool get isLoggedIn => _isLoggedIn;
+}
+
+final appRouterProvider = Provider<GoRouter>((ref) {
+  final notifier = _AuthRouterNotifier(ref);
+  return GoRouter(
+    navigatorKey: _rootNavigatorKey,
+    initialLocation: RouteNames.login,
+    refreshListenable: notifier,
+    redirect: (context, state) {
+      final isLoggedIn = notifier.isLoggedIn;
+      final isOnLogin = state.matchedLocation == RouteNames.login ||
+          state.matchedLocation == RouteNames.splash;
+      if (!isLoggedIn && !isOnLogin) return RouteNames.login;
+      if (isLoggedIn && isOnLogin) return RouteNames.home;
+      return null;
+    },
+    routes: [
     GoRoute(
       path: RouteNames.splash,
       builder: (context, state) =>
@@ -22,8 +55,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: RouteNames.login,
-      builder: (context, state) =>
-          const Scaffold(body: Center(child: Text('Login'))),
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: RouteNames.register,
@@ -93,7 +125,8 @@ final appRouter = GoRouter(
       ],
     ),
   ],
-);
+  );
+});
 
 // --- WIDGET DEL MENÚ INFERIOR ---
 // Este widget se encarga de pintar la barra y cambiar de pestaña visualmente
