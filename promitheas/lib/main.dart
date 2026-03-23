@@ -6,19 +6,23 @@ import 'core/theme/app_theme.dart';
 import 'core/theme/theme_provider.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
+import 'package:flutter_native_splash/flutter_native_splash.dart';
+
+
 void main() async {
   // Aseguramos que los bindings de Flutter estén listos antes de código asíncrono
-  WidgetsFlutterBinding.ensureInitialized();
+  final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  await dotenv.load(fileName: ".env");
-  final supabaseUrl = dotenv.env['SUPABASE_URL'];
-  final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+  // await dotenv.load(fileName: ".env");
+  // final supabaseUrl = dotenv.env['SUPABASE_URL'];
+  // final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
 
-  if (supabaseUrl == null || supabaseAnonKey == null) {
-    throw Exception('Supabase credentials not found in .env file.');
-  }
-  // Inicializamos la conexión con supabase
-  await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+  // if (supabaseUrl == null || supabaseAnonKey == null) {
+  //   throw Exception('Supabase credentials not found in .env file.');
+  // }
+  // // Inicializamos la conexión con supabase
+  // await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   runApp(const ProviderScope(child: PromitheasApp()));
 }

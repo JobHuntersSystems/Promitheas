@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promitheas/features/splash/splash.dart';
 
 // 1. Rutas absolutas. Mucho más seguras y fáciles de leer.
 import 'package:promitheas/core/router/router_names.dart';
@@ -13,12 +14,12 @@ final _shellNavigatorKey = GlobalKey<NavigatorState>();
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: RouteNames
-      .home, // Arrancamos en Home para que veas la barra inferior (luego cambiaremos a /splash)
+      .splash, // Arrancamos en Home para que veas la barra inferior (luego cambiaremos a /splash)
   routes: [
     GoRoute(
       path: RouteNames.splash,
       builder: (context, state) =>
-          const Scaffold(body: Center(child: Text('Splash'))),
+          const AnimatedSplashScreen(),
     ),
     GoRoute(
       path: RouteNames.login,
