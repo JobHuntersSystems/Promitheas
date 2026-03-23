@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:promitheas/features/splash/splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:promitheas/core/router/router_names.dart';
@@ -12,46 +13,15 @@ import 'package:promitheas/features/product_detail/views/product_detail_screen.d
 // Llaves maestras para controlar qué parte de la pantalla se actualiza
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
-class _AuthRouterNotifier extends ChangeNotifier {
-  _AuthRouterNotifier(Ref ref) {
-    // Valor inicial sincrónico desde la sesión actual de Supabase
-    _isLoggedIn = Supabase.instance.client.auth.currentUser != null;
-    // Escucha cambios futuros de autenticación
-    ref.listen<AsyncValue<AuthState>>(authStateProvider, (_, next) {
-      final loggedIn = next.maybeWhen(
-        data: (s) => s.session != null,
-        orElse: () => _isLoggedIn,
-      );
-      if (_isLoggedIn != loggedIn) {
-        _isLoggedIn = loggedIn;
-        notifyListeners();
-      }
-    });
-  }
-
-  bool _isLoggedIn = false;
-  bool get isLoggedIn => _isLoggedIn;
-}
-
-final appRouterProvider = Provider<GoRouter>((ref) {
-  final notifier = _AuthRouterNotifier(ref);
-  return GoRouter(
-    navigatorKey: _rootNavigatorKey,
-    initialLocation: RouteNames.login,
-    refreshListenable: notifier,
-    redirect: (context, state) {
-      final isLoggedIn = notifier.isLoggedIn;
-      final isOnLogin = state.matchedLocation == RouteNames.login ||
-          state.matchedLocation == RouteNames.splash;
-      if (!isLoggedIn && !isOnLogin) return RouteNames.login;
-      if (isLoggedIn && isOnLogin) return RouteNames.home;
-      return null;
-    },
-    routes: [
+final appRouter = GoRouter(
+  navigatorKey: _rootNavigatorKey,
+  initialLocation: RouteNames
+      .splash, 
+  routes: [
     GoRoute(
       path: RouteNames.splash,
       builder: (context, state) =>
-          const Scaffold(body: Center(child: Text('Splash'))),
+          const AnimatedSplashScreen(),
     ),
     GoRoute(
       path: RouteNames.login,
