@@ -15,8 +15,7 @@ final _rootNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
-  initialLocation: RouteNames
-      .splash, 
+  initialLocation: RouteNames.splash,
   routes: [
     GoRoute(
       path: RouteNames.splash,
@@ -95,8 +94,7 @@ final appRouter = GoRouter(
       ],
     ),
   ],
-  );
-});
+);
 
 // --- WIDGET DEL MENÚ INFERIOR ---
 // Este widget se encarga de pintar la barra y cambiar de pestaña visualmente
