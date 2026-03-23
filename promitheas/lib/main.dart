@@ -33,7 +33,7 @@ class PromitheasApp extends ConsumerWidget {
     return MaterialApp.router(
       title: 'Promitheas',
       debugShowCheckedModeBanner: false,
-      routerConfig: appRouter,
+      routerConfig: ref.watch(appRouterProvider),
       theme: AppTheme.lightTheme,
       darkTheme: AppTheme.darkTheme,
       themeMode: currentThemeMode,
