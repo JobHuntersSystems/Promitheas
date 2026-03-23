@@ -70,6 +70,7 @@ flutter:
     - .env
     - assets/images/logo.png
     - assets/images/transparent.png
+    - assets/promitheas_logo.png
 
   # To add assets to your application, add an assets section, like this:
   # assets:

@@ -1,20 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promitheas/features/splash/splash.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-// 1. Rutas absolutas. Mucho más seguras y fáciles de leer.
 import 'package:promitheas/core/router/router_names.dart';
-import 'package:promitheas/features/home/views/home_screen.dart'; // <-- Ruta actualizada
-import 'package:promitheas/features/product_detail/views/product_detail_screen.dart'; // <-- Asumo que la moveremos aquí también
+import 'package:promitheas/features/auth/providers/auth_provider.dart';
+import 'package:promitheas/features/auth/views/login_screen.dart';
+import 'package:promitheas/features/home/views/home_screen.dart';
+import 'package:promitheas/features/product_detail/views/product_detail_screen.dart';
 
 // Llaves maestras para controlar qué parte de la pantalla se actualiza
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
-final _shellNavigatorKey = GlobalKey<NavigatorState>();
 
 final appRouter = GoRouter(
   navigatorKey: _rootNavigatorKey,
   initialLocation: RouteNames
-      .splash, // Arrancamos en Home para que veas la barra inferior (luego cambiaremos a /splash)
+      .splash, 
   routes: [
     GoRoute(
       path: RouteNames.splash,
@@ -23,8 +25,7 @@ final appRouter = GoRouter(
     ),
     GoRoute(
       path: RouteNames.login,
-      builder: (context, state) =>
-          const Scaffold(body: Center(child: Text('Login'))),
+      builder: (context, state) => const LoginScreen(),
     ),
     GoRoute(
       path: RouteNames.register,
@@ -94,7 +95,8 @@ final appRouter = GoRouter(
       ],
     ),
   ],
-);
+  );
+});
 
 // --- WIDGET DEL MENÚ INFERIOR ---
 // Este widget se encarga de pintar la barra y cambiar de pestaña visualmente
