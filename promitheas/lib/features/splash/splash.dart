@@ -90,7 +90,8 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
     await Future.delayed(const Duration(milliseconds: 1500));
 
     if (mounted) {
-      context.go(RouteNames.home);
+      final session = Supabase.instance.client.auth.currentSession;
+      context.go(session != null ? RouteNames.home : RouteNames.login);
     }
   }
 
