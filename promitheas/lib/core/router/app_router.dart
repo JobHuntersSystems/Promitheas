@@ -19,12 +19,20 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(
       path: RouteNames.splash,
-      builder: (context, state) =>
-          const AnimatedSplashScreen(),
+      builder: (context, state) => const AnimatedSplashScreen(),
     ),
     GoRoute(
       path: RouteNames.login,
-      builder: (context, state) => const LoginScreen(),
+      pageBuilder: (context, state) {
+        return CustomTransitionPage(
+          key: state.pageKey,
+          child: const LoginScreen(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            return FadeTransition(opacity: animation, child: child);
+          },
+          transitionDuration: const Duration(milliseconds: 800),
+        );
+      },
     ),
     GoRoute(
       path: RouteNames.register,
@@ -44,7 +52,18 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.home,
-              builder: (context, state) => const HomeScreen(),
+              pageBuilder: (context, state) {
+                return CustomTransitionPage(
+                  key: state.pageKey,
+                  child: const HomeScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(opacity: animation, child: child);
+                      },
+                  transitionDuration: const Duration(milliseconds: 800),
+                );
+              },
+
               // Sub-ruta para el detalle del producto (pantalla completa, oculta la barra)
               routes: [
                 GoRoute(
