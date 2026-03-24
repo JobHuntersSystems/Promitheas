@@ -35,7 +35,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
     _logoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.3, curve: Curves.easeOut),
+        curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
       ),
     );
 
@@ -69,6 +69,9 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
   }
 
   Future<void> _startSplashSequence() async {
+    // Espera 1 segundo antes de iniciar la animación
+    await Future.delayed(const Duration(seconds: 3));
+    
     _controller.forward();
 
     // Inicia Supabase sin bloquear, con timeout
@@ -96,17 +99,17 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
   }
 
   Future<void> _initSupabase() async {
-    try {
-      await dotenv.load(fileName: ".env");
-      final supabaseUrl = dotenv.env['SUPABASE_URL'];
-      final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+    // try {
+    //   await dotenv.load(fileName: ".env");
+    //   final supabaseUrl = dotenv.env['SUPABASE_URL'];
+    //   final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
 
-      if (supabaseUrl != null && supabaseAnonKey != null) {
-        await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
-      }
-    } catch (e) {
-      debugPrint('Error inicializando Supabase: $e');
-    }
+    //   if (supabaseUrl != null && supabaseAnonKey != null) {
+    //     await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+    //   }
+    // } catch (e) {
+    //   debugPrint('Error inicializando Supabase: $e');
+    // }
   }
 
   @override
