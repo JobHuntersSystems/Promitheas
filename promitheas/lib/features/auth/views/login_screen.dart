@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
 import '../providers/auth_provider.dart';
+import '../../../core/router/router_names.dart';
 import '../../../core/theme/app_colors.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -118,7 +120,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
 
     if (error != null) {
       setState(() => _errorMsg = error);
-    } else if (!_isLogin) {
+    } else if (_isLogin) {
+      context.go(RouteNames.home);
+    } else {
       setState(() => _signupSuccess = true);
     }
   }

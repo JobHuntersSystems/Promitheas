@@ -45,7 +45,7 @@ class AuthRepository {
       },
     );
 
-    if (response.session != null && response.user != null) {
+    if (response.user != null) {
       try {
         await _supabase.from('users').upsert({
           'user_id': response.user!.id,
