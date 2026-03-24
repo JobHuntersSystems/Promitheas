@@ -15,15 +15,15 @@ void main() async {
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
 
-  // await dotenv.load(fileName: ".env");
-  // final supabaseUrl = dotenv.env['SUPABASE_URL'];
-  // final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+   await dotenv.load(fileName: ".env");
+   final supabaseUrl = dotenv.env['SUPABASE_URL'];
+   final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
 
-  // if (supabaseUrl == null || supabaseAnonKey == null) {
-  //   throw Exception('Supabase credentials not found in .env file.');
-  // }
+   if (supabaseUrl == null || supabaseAnonKey == null) {
+     throw Exception('Supabase credentials not found in .env file.');
+   }
   // // Inicializamos la conexión con supabase
-  // await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+   await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
   runApp(const ProviderScope(child: PromitheasApp()));
 }
