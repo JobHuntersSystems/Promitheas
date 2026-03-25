@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:promitheas/core/router/router_names.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -70,7 +69,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
 
   Future<void> _startSplashSequence() async {
     // Espera 1 segundo antes de iniciar la animación
-    await Future.delayed(const Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 1));
 
     _controller.forward();
 
