@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-import '../providers/auth_provider.dart';
-import '../../../core/router/router_names.dart';
-import '../../../core/theme/app_colors.dart';
+import 'package:promitheas/features/auth/providers/auth_provider.dart';
+import 'package:promitheas/core/router/router_names.dart';
+import 'package:promitheas/core/theme/app_colors.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
@@ -77,7 +77,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       initialDate: DateTime(2000),
       firstDate: DateTime(1920),
       lastDate: DateTime.now().subtract(const Duration(days: 365 * 13)),
-      helpText: 'Fecha de nacimiento',
+      helpText: 'Birthday Date',
       builder: (context, child) => Theme(
         data: Theme.of(context).copyWith(
           colorScheme: Theme.of(context)
@@ -198,7 +198,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                       : _signupSuccess
                           ? const _StatusBanner(
                               message:
-                                  '¡Cuenta creada! Revisa tu correo para confirmar.',
+                                  'Account created! Check your email to confirm.',
                               isError: false,
                             )
                           : const SizedBox.shrink(),
@@ -232,8 +232,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           letterSpacing: 0.2,
         ),
         tabs: const [
-          Tab(text: 'Iniciar sesión'),
-          Tab(text: 'Crear cuenta'),
+          Tab(text: 'Log in'),
+          Tab(text: 'Create account'),
         ],
       ),
     );
@@ -250,11 +250,11 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             controller: _emailCtrl,
             keyboardType: TextInputType.emailAddress,
             textInputAction: TextInputAction.next,
-            decoration: _inputDeco('Correo electrónico', Icons.email_outlined),
+            decoration: _inputDeco('Email', Icons.email_outlined),
             validator: (v) {
-              if (v == null || v.isEmpty) return 'Introduce tu correo';
+              if (v == null || v.isEmpty) return 'Enter your email';
               if (!RegExp(r'^[\w\-.]+@([\w\-]+\.)+[\w\-]{2,}$').hasMatch(v)) {
-                return 'Correo no válido';
+                return 'Invalid email';
               }
               return null;
             },
@@ -262,12 +262,12 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
           const SizedBox(height: 16),
           _buildPasswordField(
             controller: _passCtrl,
-            label: 'Contraseña',
+            label: 'Password',
             obscure: _obscurePass,
             onToggle: () => setState(() => _obscurePass = !_obscurePass),
             validator: (v) {
-              if (v == null || v.isEmpty) return 'Introduce tu contraseña';
-              if (v.length < 6) return 'Mínimo 6 caracteres';
+              if (v == null || v.isEmpty) return 'Enter your password';
+              if (v.length < 6) return 'Minimum 6 characters';
               return null;
             },
           ),
@@ -275,13 +275,13 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             const SizedBox(height: 16),
             _buildPasswordField(
               controller: _confirmCtrl,
-              label: 'Confirmar contraseña',
+              label: 'Confirm password',
               obscure: _obscureConfirm,
               onToggle: () =>
                   setState(() => _obscureConfirm = !_obscureConfirm),
               validator: (v) {
-                if (v == null || v.isEmpty) return 'Confirma tu contraseña';
-                if (v != _passCtrl.text) return 'Las contraseñas no coinciden';
+                if (v == null || v.isEmpty) return 'Confirm your password';
+                if (v != _passCtrl.text) return 'The passwords dont match';
                 return null;
               },
             ),
@@ -293,9 +293,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     controller: _firstNameCtrl,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.words,
-                    decoration: _inputDeco('Nombre', Icons.person_outline),
+                    decoration: _inputDeco('Name', Icons.person_outline),
                     validator: (v) =>
-                        (v == null || v.isEmpty) ? 'Campo requerido' : null,
+                        (v == null || v.isEmpty) ? 'Required field' : null,
                   ),
                 ),
                 const SizedBox(width: 12),
@@ -304,9 +304,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                     controller: _lastNameCtrl,
                     textInputAction: TextInputAction.next,
                     textCapitalization: TextCapitalization.words,
-                    decoration: _inputDeco('Apellido', Icons.person_outline),
+                    decoration: _inputDeco('Surname', Icons.person_outline),
                     validator: (v) =>
-                        (v == null || v.isEmpty) ? 'Campo requerido' : null,
+                        (v == null || v.isEmpty) ? 'Required field' : null,
                   ),
                 ),
               ],
@@ -317,7 +317,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               keyboardType: TextInputType.phone,
               textInputAction: TextInputAction.next,
               decoration: _inputDeco(
-                'Teléfono (opcional)',
+                'Phone (optional)',
                 Icons.phone_outlined,
               ).copyWith(prefixText: '+ '),
             ),
@@ -329,7 +329,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                   readOnly: true,
                   decoration: _inputDeco(
                     _birthday == null
-                        ? 'Fecha de nacimiento (opcional)'
+                        ? 'Date of birth (optional)'
                         : '${_birthday!.day.toString().padLeft(2, '0')}/'
                             '${_birthday!.month.toString().padLeft(2, '0')}/'
                             '${_birthday!.year}',
@@ -434,7 +434,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
                 ),
               )
             : Text(
-                _isLogin ? 'Iniciar sesión' : 'Crear cuenta',
+                _isLogin ? 'Log in' : 'Create account',
                 style: const TextStyle(
                   fontSize: 16,
                   fontWeight: FontWeight.w600,

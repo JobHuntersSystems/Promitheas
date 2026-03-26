@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import '../repositories/auth_repository.dart';
+import 'package:promitheas/features/auth/repositories/auth_repository.dart';
 
 /// Escucha los cambios de sesión de Supabase (login, logout, token refresh…)
 /// Cuando el usuario confirma el email e inicia sesión por primera vez,
