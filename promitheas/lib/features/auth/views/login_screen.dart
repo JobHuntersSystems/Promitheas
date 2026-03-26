@@ -140,8 +140,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
             colors: isDark
-                ? [const Color(0xFF0F172A), const Color(0xFF1E3A5F)]
-                : [const Color(0xFFFF6A00), const Color(0xFFFF9A3C)],
+              ? [AppColors.backgroundDark, const Color(0xFF1E3A5F)]
+              : [AppColors.primaryFire, const Color(0xFFFF9A3C)],
           ),
         ),
         child: SafeArea(
@@ -166,7 +166,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   Widget _buildCard(bool isLoading, bool isDark) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF1E293B) : Colors.white,
+        color: isDark ? AppColors.surfaceDark : AppColors.backgroundLight,
         borderRadius: BorderRadius.circular(28),
         boxShadow: [
           BoxShadow(
@@ -378,7 +378,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       prefixIcon: Icon(icon, color: Colors.grey, size: 20),
       filled: true,
       fillColor:
-          isDark ? Colors.white.withValues(alpha:0.05) : const Color(0xFFF8FAFC),
+          isDark ? Colors.white.withValues(alpha:0.05) : AppColors.surfaceLight,
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       border: OutlineInputBorder(

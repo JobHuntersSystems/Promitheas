@@ -37,7 +37,7 @@ class AuthFormNotifier extends AsyncNotifier<void> {
       return _mapError(e.message);
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
-      return 'Error inesperado. Inténtalo de nuevo.';
+      return 'Unexpected error. Try again.';
     }
   }
 
@@ -66,22 +66,22 @@ class AuthFormNotifier extends AsyncNotifier<void> {
       return _mapError(e.message);
     } catch (e) {
       state = AsyncError(e, StackTrace.current);
-      return 'Error inesperado. Inténtalo de nuevo.';
+      return 'Unexpected error. Try again.';
     }
   }
 
   String _mapError(String message) {
     if (message.contains('Invalid login credentials')) {
-      return 'Correo o contraseña incorrectos.';
+      return 'Incorrect email or password.';
     }
     if (message.contains('Email not confirmed')) {
-      return 'Confirma tu correo antes de iniciar sesión.';
+      return 'Confirm your email before logging in.';
     }
     if (message.contains('User already registered')) {
-      return 'Ya existe una cuenta con ese correo.';
+      return 'An account with that email already exists.';
     }
     if (message.contains('Password should be at least')) {
-      return 'La contraseña debe tener al menos 6 caracteres.';
+      return 'The password must have at least 6 characters.';
     }
     return message;
   }
