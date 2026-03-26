@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promitheas/features/splash/splash.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:promitheas/core/router/router_names.dart';
-import 'package:promitheas/features/auth/providers/auth_provider.dart';
 import 'package:promitheas/features/auth/views/login_screen.dart';
 import 'package:promitheas/features/home/views/home_screen.dart';
 import 'package:promitheas/features/product_detail/views/product_detail_screen.dart';
@@ -33,11 +31,6 @@ final appRouter = GoRouter(
           transitionDuration: const Duration(milliseconds: 800),
         );
       },
-    ),
-    GoRoute(
-      path: RouteNames.register,
-      builder: (context, state) =>
-          const Scaffold(body: Center(child: Text('Create User'))),
     ),
 
     // Ruta con barra inferior (El menú principal con tus 4 pestañas)

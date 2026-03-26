@@ -112,7 +112,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
             lastName: _lastNameCtrl.text.trim(),
             phone: _phoneCtrl.text.trim().isEmpty
                 ? null
-                : '+${_phoneCtrl.text.trim()}',
+                : '${_phoneCtrl.text.trim()}',
             birthday: _birthday,
           );
 
@@ -319,7 +319,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
               decoration: _inputDeco(
                 'Phone (optional)',
                 Icons.phone_outlined,
-              ).copyWith(prefixText: '+ '),
+              ),
             ),
             const SizedBox(height: 16),
             GestureDetector(

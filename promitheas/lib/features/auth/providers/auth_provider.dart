@@ -6,14 +6,7 @@ import 'package:promitheas/features/auth/repositories/auth_repository.dart';
 /// Cuando el usuario confirma el email e inicia sesión por primera vez,
 /// inserta su fila en la tabla users si no existe.
 final authStateProvider = StreamProvider<AuthState>((ref) {
-  return ref.read(authRepositoryProvider).authStateChanges.map((state) {
-    if (state.event == AuthChangeEvent.signedIn && state.session != null) {
-      ref
-          .read(authRepositoryProvider)
-          .ensureUserProfile(state.session!.user);
-    }
-    return state;
-  });
+  return ref.read(authRepositoryProvider).authStateChanges;
 });
 
 /// Gestiona el estado del formulario: loading, error, éxito
