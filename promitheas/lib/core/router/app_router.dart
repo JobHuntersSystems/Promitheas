@@ -5,7 +5,6 @@ import 'package:promitheas/features/splash/splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:promitheas/core/router/router_names.dart';
-import 'package:promitheas/features/auth/providers/auth_provider.dart';
 import 'package:promitheas/features/auth/views/login_screen.dart';
 import 'package:promitheas/features/home/views/home_screen.dart';
 import 'package:promitheas/features/product_detail/views/product_detail_screen.dart';
