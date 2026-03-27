@@ -1,7 +1,8 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:promitheas/core/supabase/supabase_client.dart';
+
+
 final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final supabase = ref.read(supabaseProvider);
   return AuthRepository(supabase);
@@ -30,9 +31,7 @@ class AuthRepository {
     String? phone,
     DateTime? birthday,
   }) async {
-    // 1. Enviamos los datos a Supabase Auth.
-    // 2. El trigger "on_auth_user_created" de SQL se encarga de insertar 
-    // automáticamente estos datos en la tabla public.users.
+    //  Enviamos los datos a Supabase Auth. El trigger "on_auth_user_created" de SQL se encarga de insertar 
     return await _supabase.auth.signUp(
       email: email,
       password: password,
