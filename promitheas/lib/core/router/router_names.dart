@@ -12,6 +12,7 @@ abstract final class RouteNames {
   static const String userConfig = '/profile/config';
   static const String termsPrivacy = '/profile/terms';
   static const String favorites = '/favorites';
+  static const String folderDetail = 'folder/:id';
 
   // Named routes (para context.goNamed())
   static const String splashName = 'splash';
@@ -24,7 +25,12 @@ abstract final class RouteNames {
   static const String savedName = 'saved';
   static const String profileName = 'profile';
   static const String favoritesName = 'favorites';
+  static const String folderDetailName = 'folder-detail';
 
   // Helper para construir la ruta de detalle de producto
   static String productDetailPath(String id) => '/home/product/$id';
+
+  // Helper para construir la ruta de detalle de carpeta
+  static String folderDetailPath(int id, String name) =>
+      '/favorites/folder/$id?name=${Uri.encodeComponent(name)}';
 }
