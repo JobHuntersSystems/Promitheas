@@ -45,4 +45,14 @@ class FavProductRepository {
         .update({'folder_id': folderId})
         .eq('favorite_id', favoriteId);
   }
+  Future<List<FavoriteProduct>> getfreeProducts() async {
+    final data = await _supabase
+        .from('favorite_products')
+        .select('favorite_id, user_id, product_id, created_at, folder_id, products(*)')
+        .eq('user_id', _userId)
+        .isFilter('folder_id', null) 
+        .order('created_at', ascending: false); 
+
+    return (data as List).map((e) => FavoriteProduct.fromJson(e)).toList();
+  }
 }

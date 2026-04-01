@@ -16,3 +16,8 @@ final folderProductsProvider =
   final repository = ref.read(favProductRepositoryProvider);
   return repository.getProductsByFolder(folderId);
 });
+
+final freeProductsProvider = FutureProvider<List<FavoriteProduct>>((ref) {
+  final repository = ref.read(favProductRepositoryProvider);
+  return repository.getfreeProducts();
+});
