@@ -5,9 +5,9 @@ import 'package:promitheas/features/auth/providers/auth_provider.dart';
 import 'package:promitheas/features/auth/widgets/login_header.dart';
 import 'package:promitheas/features/auth/widgets/loginForm.dart';
 import 'package:promitheas/features/auth/widgets/createForm.dart';
-import 'package:promitheas/features/auth/widgets/status_banner.dart';
 import 'package:promitheas/core/router/router_names.dart';
 import 'package:promitheas/core/theme/app_colors.dart';
+import 'package:promitheas/shared/widgets/status_banner.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});

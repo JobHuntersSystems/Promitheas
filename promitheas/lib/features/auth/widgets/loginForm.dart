@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:promitheas/features/auth/widgets/decoration.dart';
+import 'package:promitheas/shared/widgets/decoration.dart';
 
 class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
