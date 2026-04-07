@@ -31,7 +31,7 @@ class FavoriteScreen extends ConsumerWidget {
               const SliverToBoxAdapter(
                 child: PageHeader(
                   icon: Icons.bookmark_rounded,
-                  title: 'FAVORITESS',
+                  title: 'FAVORITES',
                 ),
               ),
               
@@ -39,9 +39,7 @@ class FavoriteScreen extends ConsumerWidget {
                 child: foldersAsync.when(
                   loading: () => const FoldersGridLoading(),
                   error: (err, stack) => const FoldersEmpty(),
-                  data: (folders) {
-                    if (folders.isEmpty) return const FoldersEmpty();
-                    return FoldersGrid(folders: folders);
+                  data: (folders) {return FoldersGrid(folders: folders);
                   },
                 ),
               ),
