@@ -66,6 +66,7 @@ class HomeRepository {
         ),
       ],
     ),
+
     // ... Puedes añadir los demás productos mock aquí siguiendo el mismo patrón ...
   ];
 
