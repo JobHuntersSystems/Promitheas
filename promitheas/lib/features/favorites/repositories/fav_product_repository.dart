@@ -14,10 +14,13 @@ class FavProductRepository {
   FavProductRepository(this._supabase);
   String get _userId => _supabase.auth.currentUser!.id;
 
+  static const _productSelect =
+      'favorite_id, user_id, product_id, created_at, folder_id, products(product_id, product_name, description, image_path)';
+
   Future<List<FavoriteProduct>> getProductsByFolder(int folderId) async {
     final data = await _supabase
         .from('favorite_products')
-        .select('favorite_id, user_id, product_id, created_at, folder_id, products(*)')
+        .select(_productSelect)
         .eq('user_id', _userId)
         .eq('folder_id', folderId);
 
@@ -48,10 +51,10 @@ class FavProductRepository {
   Future<List<FavoriteProduct>> getfreeProducts() async {
     final data = await _supabase
         .from('favorite_products')
-        .select('favorite_id, user_id, product_id, created_at, folder_id, products(*)')
+        .select(_productSelect)
         .eq('user_id', _userId)
-        .isFilter('folder_id', null) 
-        .order('created_at', ascending: false); 
+        .isFilter('folder_id', null)
+        .order('created_at', ascending: false);
 
     return (data as List).map((e) => FavoriteProduct.fromJson(e)).toList();
   }
