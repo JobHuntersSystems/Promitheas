@@ -2,11 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promitheas/core/router/router_names.dart';
+import 'package:promitheas/core/theme/app_colors.dart';
 import 'package:promitheas/features/favorites/models/favorite_folder.dart';
 import 'package:promitheas/features/favorites/providers/favorites_provider.dart';
 import 'package:promitheas/features/favorites/repositories/fav_folder_repository.dart';
 import 'package:promitheas/features/favorites/widgets/folder_card.dart';
-import 'package:promitheas/features/favorites/widgets/add_folder.dart'; 
+import 'package:promitheas/features/favorites/widgets/add_folder.dart';
 
 class FoldersGrid extends ConsumerWidget {
   const FoldersGrid({
@@ -19,25 +20,28 @@ class FoldersGrid extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 0.9,
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.85,
         ),
         itemCount: folders.length + 1,
         itemBuilder: (context, index) {
-          if (index == 0) return const AddFolderCard();
-          final folder = folders[index - 1];
-          return FolderCard(
-            folder: folder,
-            onTap: () => context.go(RouteNames.folderDetailPath(folder.folderId, folder.folderName)),
-            onLongPress: () => _confirmDelete(context, ref, folder),
-          );
+          if (index < folders.length) {
+            final folder = folders[index];
+            return FolderCard(
+              folder: folder,
+              color: AppColors.folderPalette[index % AppColors.folderPalette.length],
+              onTap: () => context.go(RouteNames.folderDetailPath(folder.folderId, folder.folderName)),
+              onLongPress: () => _confirmDelete(context, ref, folder),
+            );
+          }
+          return const AddFolderCard();
         },
       ),
     );
@@ -57,7 +61,7 @@ class FoldersGrid extends ConsumerWidget {
             child: const Text('Cancel'),
           ),
           FilledButton(
-            style: FilledButton.styleFrom(backgroundColor: Colors.red),
+            style: FilledButton.styleFrom(backgroundColor: AppColors.danger),
             onPressed: () => Navigator.pop(dialogContext, true),
             child: const Text('Delete'),
           ),
@@ -78,17 +82,17 @@ class FoldersGridLoading extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       child: GridView.builder(
         shrinkWrap: true,
         physics: const NeverScrollableScrollPhysics(),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          crossAxisSpacing: 12,
-          mainAxisSpacing: 12,
-          childAspectRatio: 0.9,
+          crossAxisCount: 3,
+          crossAxisSpacing: 10,
+          mainAxisSpacing: 10,
+          childAspectRatio: 0.85,
         ),
-        itemCount: 4,
+        itemCount: 6,
         itemBuilder: (_, __) => const FolderCardShimmer(),
       ),
     );

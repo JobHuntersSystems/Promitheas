@@ -21,7 +21,7 @@ class FolderScreen extends ConsumerWidget {
       appBar: AppBar(title: Text(folderName)),
       body: productsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
-        error: (_, __) => const Center(child: Text('Error al cargar productos')),
+        error: (_, __) => const Center(child: Text('Error loading products')),
         data: (favorites) {
           if (favorites.isEmpty) {
             return const Center(
@@ -31,7 +31,7 @@ class FolderScreen extends ConsumerWidget {
                   Icon(Icons.folder_open_rounded, size: 64, color: Colors.grey),
                   SizedBox(height: 12),
                   Text(
-                    'Esta carpeta está vacía',
+                    'This folder is empty',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],
@@ -45,7 +45,7 @@ class FolderScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
+                  crossAxisCount: 3,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
                   childAspectRatio: 0.75,
