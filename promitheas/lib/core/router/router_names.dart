@@ -26,5 +26,5 @@ abstract final class RouteNames {
   static const String favoritesName = 'favorites';
 
   // Helper para construir la ruta de detalle de producto
-  static String productDetailPath(String id) => '/home/product/$id';
+  static String productDetailPath(int id) => '$productDetail/$id';
 }

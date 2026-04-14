@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:promitheas/shared/widgets/product_card.dart';
+import 'package:promitheas/shared/widgets/product_shimmer.dart';
 
 class ProductSectionLoading extends StatelessWidget {
   const ProductSectionLoading({required this.title});

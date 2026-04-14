@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:promitheas/features/home/models/product.dart';
+import 'package:promitheas/shared/models/product_summary.dart';
 import 'package:promitheas/features/home/widgets/empty_section.dart';
 import 'package:promitheas/shared/widgets/product_card.dart';
 
@@ -11,8 +11,8 @@ class ProductSection extends StatelessWidget {
   });
 
   final String title;
-  final List<Product> products;
-  final ValueChanged<String> onProductTap;
+  final List<ProductSummary> products;
+  final ValueChanged<int> onProductTap; // 👈 cambiado
 
   @override
   Widget build(BuildContext context) {
@@ -54,8 +54,9 @@ class _SectionTitle extends StatelessWidget {
 
 class _ProductRow extends StatelessWidget {
   const _ProductRow({required this.products, required this.onTap});
-  final List<Product> products;
-  final ValueChanged<String> onTap;
+
+  final List<ProductSummary> products;
+  final ValueChanged<int> onTap; // 👈 cambiado
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +67,7 @@ class _ProductRow extends StatelessWidget {
       separatorBuilder: (_, __) => const SizedBox(width: 12),
       itemBuilder: (_, index) => ProductCard(
         product: products[index],
-        onTap: () => onTap(products[index].id),
+        onTap: () => onTap(products[index].id), // ✅ ahora coincide
       ),
     );
   }

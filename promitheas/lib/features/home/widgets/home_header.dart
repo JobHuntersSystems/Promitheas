@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:promitheas/features/home/models/product.dart';
+import 'package:promitheas/shared/models/product_summary.dart';
 import 'package:promitheas/shared/widgets/product_card.dart';
 
 class HomeHeader extends StatelessWidget {
