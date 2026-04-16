@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:promitheas/core/router/router_names.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
@@ -12,12 +11,13 @@ class AnimatedSplashScreen extends StatefulWidget {
   State<AnimatedSplashScreen> createState() => _AnimatedSplashScreenState();
 }
 
-class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with SingleTickerProviderStateMixin {
+class _AnimatedSplashScreenState extends State<AnimatedSplashScreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
-  
+
   late Animation<double> _logoOpacity;
   late Animation<double> _logoSize; // ✅ Cambiado de Scale a Size
-  late Animation<double> _textReveal; 
+  late Animation<double> _textReveal;
   late Animation<double> _textOpacity;
 
   @override
@@ -25,17 +25,16 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
     super.initState();
     FlutterNativeSplash.remove();
 
-    
     _controller = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 2600), 
+      duration: const Duration(milliseconds: 2600),
     );
 
     // 1. El logo aparece
     _logoOpacity = Tween<double>(begin: 0.0, end: 1.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.0, 0.3, curve: Curves.easeOut),
+        curve: const Interval(0.0, 0.5, curve: Curves.easeOut),
       ),
     );
 
@@ -45,7 +44,7 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
     _logoSize = Tween<double>(begin: 120.0, end: 55.0).animate(
       CurvedAnimation(
         parent: _controller,
-        curve: const Interval(0.4, 0.8, curve: Curves.easeInOutCubic), 
+        curve: const Interval(0.4, 0.8, curve: Curves.easeInOutCubic),
       ),
     );
 
@@ -69,17 +68,24 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
   }
 
   Future<void> _startSplashSequence() async {
+    // Espera 1 segundo antes de iniciar la animación
+    await Future.delayed(const Duration(seconds: 1));
+
     _controller.forward();
 
     // Inicia Supabase sin bloquear, con timeout
-    final supabaseInit = _initSupabase().timeout(
-      const Duration(seconds: 5),
-      onTimeout: () {
-        debugPrint('Supabase init timeout - continuando sin inicialización');
-      },
-    ).catchError((e) {
-      debugPrint('Error en Supabase: $e');
-    });
+    final supabaseInit = _initSupabase()
+        .timeout(
+          const Duration(seconds: 5),
+          onTimeout: () {
+            debugPrint(
+              'Supabase init timeout - continuando sin inicialización',
+            );
+          },
+        )
+        .catchError((e) {
+          debugPrint('Error en Supabase: $e');
+        });
 
     // Espera la animación + inicialización, pero no se bloquea si Supabase falla
     await Future.wait([
@@ -96,17 +102,17 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
   }
 
   Future<void> _initSupabase() async {
-    try {
-      await dotenv.load(fileName: ".env");
-      final supabaseUrl = dotenv.env['SUPABASE_URL'];
-      final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
+    // try {
+    //   await dotenv.load(fileName: ".env");
+    //   final supabaseUrl = dotenv.env['SUPABASE_URL'];
+    //   final supabaseAnonKey = dotenv.env['SUPABASE_ANON_KEY'];
 
-      if (supabaseUrl != null && supabaseAnonKey != null) {
-        await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
-      }
-    } catch (e) {
-      debugPrint('Error inicializando Supabase: $e');
-    }
+    //   if (supabaseUrl != null && supabaseAnonKey != null) {
+    //     await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
+    //   }
+    // } catch (e) {
+    //   debugPrint('Error inicializando Supabase: $e');
+    // }
   }
 
   @override
@@ -125,19 +131,18 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
           return Center(
             child: Row(
               mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.center, 
+              crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                
                 // 1º EL LOGO (Ahora con ajuste vertical)
                 Transform.translate(
-                  // ✅ MODIFICACIÓN: El -8 significa "8 píxeles hacia arriba". 
+                  // ✅ MODIFICACIÓN: El -8 significa "8 píxeles hacia arriba".
                   // Si lo quieres más arriba, pon -12 o -15. Si te pasaste, pon -4.
-                  offset: const Offset(0, -8), 
+                  offset: const Offset(0, -8),
                   child: Opacity(
                     opacity: _logoOpacity.value,
                     child: Image.asset(
                       'assets/images/logo.png',
-                      width: _logoSize.value, 
+                      width: _logoSize.value,
                       height: _logoSize.value,
                       fit: BoxFit.contain,
                     ),
@@ -147,29 +152,28 @@ class _AnimatedSplashScreenState extends State<AnimatedSplashScreen> with Single
                 // 2º EL TEXTO
                 ClipRect(
                   child: Align(
-                    alignment: Alignment.centerLeft, 
-                    widthFactor: _textReveal.value, 
+                    alignment: Alignment.centerLeft,
+                    widthFactor: _textReveal.value,
                     child: Opacity(
                       opacity: _textOpacity.value,
                       child: const Padding(
                         // ✅ Ahora estos 10 píxeles son REALES y exactos
-                        padding: EdgeInsets.only(left: 10.0), 
+                        padding: EdgeInsets.only(left: 10.0),
                         child: Text(
                           "PROMITHEAS",
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 28, 
+                            fontSize: 28,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 2.0,
-                            height: 1.0, 
+                            height: 1.0,
                           ),
-                          maxLines: 1, 
+                          maxLines: 1,
                         ),
                       ),
                     ),
                   ),
                 ),
-                
               ],
             ),
           );

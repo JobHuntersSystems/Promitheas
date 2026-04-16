@@ -5,8 +5,9 @@ import 'package:promitheas/features/splash/splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'package:promitheas/core/router/router_names.dart';
-import 'package:promitheas/features/auth/providers/auth_provider.dart';
 import 'package:promitheas/features/auth/views/login_screen.dart';
+import 'package:promitheas/features/favorites/views/favorite_screen.dart';
+import 'package:promitheas/features/favorites/views/folder_screen.dart';
 import 'package:promitheas/features/home/views/home_screen.dart';
 import 'package:promitheas/features/product_detail/views/product_detail_screen.dart';
 
@@ -95,8 +96,18 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.favorites,
-              builder: (context, state) =>
-                  const Scaffold(body: Center(child: Text('Favoritos'))),
+              builder: (context, state) => const FavoriteScreen(),
+              routes: [
+                GoRoute(
+                  path: RouteNames.folderDetail,
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) {
+                    final id = int.parse(state.pathParameters['id'] ?? '0');
+                    final name = state.uri.queryParameters['name'] ?? '';
+                    return FolderScreen(folderId: id, folderName: name);
+                  },
+                ),
+              ],
             ),
           ],
         ),
