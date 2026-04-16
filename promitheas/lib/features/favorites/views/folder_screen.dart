@@ -48,7 +48,7 @@ class FolderScreen extends ConsumerWidget {
                   crossAxisCount: 3,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 0.75,
+                  childAspectRatio: 0.65,
                 ),
                 itemCount: favorites.length,
                 itemBuilder: (context, index) {
