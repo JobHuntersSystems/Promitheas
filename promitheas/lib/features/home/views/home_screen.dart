@@ -47,7 +47,7 @@ class HomeScreen extends ConsumerWidget {
                   title: 'POPULAR NOW',
                   asyncProducts: popularAsync,
                   onProductTap: (id) =>
-                      context.go(RouteNames.productDetailPath(id)),
+                      context.go(RouteNames.productDetailPath(id.toString())),
                 ),
               ),
 
@@ -56,7 +56,7 @@ class HomeScreen extends ConsumerWidget {
                   title: 'BEST PRICES',
                   asyncProducts: bestPricesAsync,
                   onProductTap: (id) =>
-                      context.go(RouteNames.productDetailPath(id)),
+                      context.go(RouteNames.productDetailPath(id.toString())),
                 ),
               ),
 
@@ -65,7 +65,7 @@ class HomeScreen extends ConsumerWidget {
                   title: 'DISCOVERY',
                   asyncProducts: discoveryAsync,
                   onProductTap: (id) =>
-                      context.go(RouteNames.productDetailPath(id)),
+                      context.go(RouteNames.productDetailPath(id.toString())),
                 ),
               ),
 

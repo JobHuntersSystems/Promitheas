@@ -71,10 +71,10 @@ class FavoriteScreen extends ConsumerWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 2,
+                              crossAxisCount: 3,
                               crossAxisSpacing: 12,
                               mainAxisSpacing: 12,
-                              childAspectRatio: 0.75, 
+                              childAspectRatio: 0.65, 
                             ),
                             itemCount: products.length,
                             itemBuilder: (context, index) {
@@ -84,7 +84,7 @@ class FavoriteScreen extends ConsumerWidget {
                               return ProductCard(
                                 product: product,
                                 onTap: () {
-                                  context.go(RouteNames.productDetailPath(product.id));
+                                  context.go(RouteNames.productDetailPath(product.id.toString()));
                                 },
                               );
                             },

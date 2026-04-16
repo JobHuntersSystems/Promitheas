@@ -1,5 +1,4 @@
-import 'package:promitheas/features/home/models/product.dart';
-
+import 'package:promitheas/shared/models/product_summary.dart';
 class FavoriteProduct {
   const FavoriteProduct({
     required this.favoriteId,
@@ -15,7 +14,7 @@ class FavoriteProduct {
   final int productId;
   final DateTime createdAt;
   final int? folderId;
-  final Product? product;
+  final ProductSummary? product;
 
   factory FavoriteProduct.fromJson(Map<String, dynamic> json) {
     final productJson = json['products'];
@@ -27,7 +26,7 @@ class FavoriteProduct {
       createdAt: DateTime.parse(json['created_at'] as String),
       folderId: json['folder_id'] as int?,
       product: productJson != null
-          ? Product.fromJson(productJson as Map<String, dynamic>)
+          ? ProductSummary.fromJson(productJson as Map<String, dynamic>)
           : null,
     );
   }
@@ -39,7 +38,7 @@ class FavoriteProduct {
     DateTime? createdAt,
     int? folderId,
     bool clearFolderId = false,
-    Product? product,
+    ProductSummary? product,
   }) {
     return FavoriteProduct(
       favoriteId: favoriteId ?? this.favoriteId,
