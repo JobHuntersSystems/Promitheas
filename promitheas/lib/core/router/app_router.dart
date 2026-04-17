@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promitheas/features/profile/views/profile_screen.dart';
 import 'package:promitheas/features/splash/splash.dart';
-
+import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:promitheas/core/router/router_names.dart';
 import 'package:promitheas/features/auth/views/login_screen.dart';
 import 'package:promitheas/features/favorites/views/favorite_screen.dart';
