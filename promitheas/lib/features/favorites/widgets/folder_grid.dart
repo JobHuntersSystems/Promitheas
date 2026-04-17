@@ -9,6 +9,8 @@ import 'package:promitheas/features/favorites/repositories/fav_folder_repository
 import 'package:promitheas/features/favorites/widgets/folder_card.dart';
 import 'package:promitheas/features/favorites/widgets/add_folder.dart';
 
+/// Cuadrícula que muestra todas las carpetas de favoritos del usuario y, al final,
+/// un botón integrado para crear nuevas carpetas.
 class FoldersGrid extends ConsumerWidget {
   const FoldersGrid({
     super.key,
@@ -36,6 +38,9 @@ class FoldersGrid extends ConsumerWidget {
             final folder = folders[index];
             return FolderCard(
               folder: folder,
+              // Asigna un color de forma cíclica. 
+              // El operador módulo (%) asegura que si hay más carpetas que colores en la paleta,
+              // simplemente volverá a empezar desde el primer color sin dar error de "Index Out Of Bounds".
               color: AppColors.folderPalette[index % AppColors.folderPalette.length],
               onTap: () => context.go(RouteNames.folderDetailPath(folder.folderId, folder.folderName)),
               onLongPress: () => _confirmDelete(context, ref, folder),
@@ -46,7 +51,7 @@ class FoldersGrid extends ConsumerWidget {
       ),
     );
   }
-
+/// Muestra un modal de alerta para evitar que el usuario borre una carpeta por accidente.
   Future<void> _confirmDelete(BuildContext context, WidgetRef ref, FavoriteFolder folder) async {
     final confirmed = await showDialog<bool>(
       context: context,
@@ -75,7 +80,7 @@ class FoldersGrid extends ConsumerWidget {
     }
   }
 }
-
+/// Estado de carga de la cuadrícula.
 class FoldersGridLoading extends StatelessWidget {
   const FoldersGridLoading({super.key});
 

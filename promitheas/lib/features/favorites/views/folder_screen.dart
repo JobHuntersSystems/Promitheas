@@ -2,27 +2,32 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promitheas/features/favorites/providers/favorites_provider.dart';
 import 'package:promitheas/shared/widgets/product_card.dart';
-
+import 'package:go_router/go_router.dart';
+import 'package:promitheas/core/router/router_names.dart';
+/// Pantalla de detalle que muestra el contenido de una carpeta de favoritos específica.
 class FolderScreen extends ConsumerWidget {
   const FolderScreen({
     super.key,
     required this.folderId,
     required this.folderName,
   });
-
+/// Recibe el ID y el nombre de la carpeta a través del constructor.
   final int folderId;
   final String folderName;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    // Escuchamos el proveedor específico para esta carpeta.
     final productsAsync = ref.watch(folderProductsProvider(folderId));
 
     return Scaffold(
+      // Usamos el nombre de la carpeta como título dinámico en la barra superior.
       appBar: AppBar(title: Text(folderName)),
       body: productsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => const Center(child: Text('Error loading products')),
         data: (favorites) {
+          // Si la carpeta no tiene productos, mostramos un mensaje.
           if (favorites.isEmpty) {
             return const Center(
               child: Column(
@@ -38,7 +43,7 @@ class FolderScreen extends ConsumerWidget {
               ),
             );
           }
-
+// --- ESTADO CON DATOS ---
           return RefreshIndicator(
             onRefresh: () async => ref.invalidate(folderProductsProvider(folderId)),
             child: Padding(
@@ -52,11 +57,15 @@ class FolderScreen extends ConsumerWidget {
                 ),
                 itemCount: favorites.length,
                 itemBuilder: (context, index) {
+                  // Extraemos el objeto product que vino anidado (JOIN) desde Supabase
                   final product = favorites[index].product;
+                  // Validación de seguridad por si el producto fue borrado de la base de datos principal
                   if (product == null) return const SizedBox.shrink();
                   return ProductCard(
                     product: product,
-                    onTap: () {},
+                    onTap: () {
+                    context.go(RouteNames.productDetailPath(product.id.toString()));
+                    },
                   );
                 },
               ),

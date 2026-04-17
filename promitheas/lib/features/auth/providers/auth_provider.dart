@@ -62,6 +62,12 @@ class AuthFormNotifier extends AsyncNotifier<void> {
     }
   }
 
+  /// Cierra la sesión del usuario e invalida todos los providers de datos de usuario.
+  Future<void> signOut() async {
+    await ref.read(authRepositoryProvider).signOut();
+    ref.invalidateSelf();
+  }
+
   String _mapError(String message) {
     if (message.contains('Invalid login credentials')) {
       return 'Incorrect email or password.';

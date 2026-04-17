@@ -35,20 +35,36 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   String? _errorMessage;
   String? _successMessage;
 
+  // Controla si los controllers ya fueron inicializados con datos reales
+  bool _initialized = false;
+
   @override
   void initState() {
     super.initState();
-    
-    // Leemos el valor actual del perfil para precargar el formulario
-    // Usamos .value porque profileProvider es un AsyncNotifier
-    final profile = ref.read(profileProvider).value;
 
-    _firstNameController = TextEditingController(text: profile?.firstName ?? '');
-    _lastNameController = TextEditingController(text: profile?.lastName ?? '');
-    _phoneController = TextEditingController(text: profile?.phone ?? '');
-    _birthdayController = TextEditingController(text: profile?.birthday ?? '');
-    _thresholdController = TextEditingController(text: profile?.notificationThreshold.toString() ?? '0.0');
-    _notificationsEnabled = profile?.notificationsEnabled ?? false;
+    _firstNameController = TextEditingController();
+    _lastNameController = TextEditingController();
+    _phoneController = TextEditingController();
+    _birthdayController = TextEditingController();
+    _thresholdController = TextEditingController(text: '0.0');
+
+    // Si los datos ya están disponibles al montar (caso más común), los usamos de inmediato
+    final profile = ref.read(profileProvider).value;
+    if (profile != null) {
+      _populateControllers(profile);
+    }
+  }
+
+  void _populateControllers(profile) {
+    _firstNameController.text = profile.firstName ?? '';
+    _lastNameController.text = profile.lastName ?? '';
+    _phoneController.text = profile.phone ?? '';
+    _birthdayController.text = profile.birthday ?? '';
+    _thresholdController.text = profile.notificationThreshold.toString();
+    setState(() {
+      _notificationsEnabled = profile.notificationsEnabled ?? false;
+      _initialized = true;
+    });
   }
 
   @override
@@ -115,6 +131,13 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
   //==========================================================================
   @override
   Widget build(BuildContext context) {
+    // Si el provider aún estaba cargando al montar, poblamos los campos cuando lleguen los datos
+    ref.listen(profileProvider, (previous, next) {
+      if (!_initialized && next.value != null) {
+        _populateControllers(next.value!);
+      }
+    });
+
     final primaryColor = Theme.of(context).colorScheme.primary;
 
     return Scaffold(

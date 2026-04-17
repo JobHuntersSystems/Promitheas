@@ -4,6 +4,8 @@ import 'package:promitheas/core/theme/app_colors.dart';
 import 'package:promitheas/features/favorites/providers/favorites_provider.dart';
 import 'package:promitheas/features/favorites/repositories/fav_folder_repository.dart';
 
+/// Tarjeta interactiva que permite al usuario crear una nueva carpeta de favoritos.
+/// Al tocarla, despliega un cuadro de diálogo nativo para ingresar el nombre.
 class AddFolderCard extends ConsumerWidget {
   const AddFolderCard({super.key});
 
@@ -12,6 +14,7 @@ class AddFolderCard extends ConsumerWidget {
     return GestureDetector(
       onTap: () => _showAddFolderDialog(context, ref),
       child: CustomPaint(
+        // Utilizamos un CustomPainter para lograr el efecto de "borde punteado",
         painter: _DashedBorderPainter(AppColors.textSecondary.withValues(alpha: 0.3)),
         child: Container(
           decoration: BoxDecoration(
@@ -42,8 +45,11 @@ class AddFolderCard extends ConsumerWidget {
     );
   }
 
+/// Muestra un modal (AlertDialog) para capturar el nombre de la nueva carpeta
+  /// y gestiona la llamada a la base de datos.
   Future<void> _showAddFolderDialog(BuildContext context, WidgetRef ref) async {
     final controller = TextEditingController();
+    // Aquí esperamos un booleano: true si pulsó "Crear", false (o null) si canceló.
     final confirmed = await showDialog<bool>(
       context: context,
       builder: (dialogContext) => AlertDialog(
@@ -69,10 +75,13 @@ class AddFolderCard extends ConsumerWidget {
         ],
       ),
     );
-
+// Si el usuario confirmó y no dejó el campo vacío (o con puros espacios)
     if (confirmed == true && controller.text.trim().isNotEmpty) {
       try {
+        // 1. Llamamos al repositorio para insertar la carpeta en Supabase.
         await ref.read(favFolderRepositoryProvider).createFolder(controller.text);
+        // 2. ÉXITO: Invalidamos el provider de carpetas. Esto fuerza a la UI principal
+        // a recargar la lista desde Supabase y mostrar la nueva carpeta automáticamente.
         ref.invalidate(foldersProvider);
       } catch (e) {
         if (context.mounted) {
@@ -88,7 +97,8 @@ class AddFolderCard extends ConsumerWidget {
     }
   }
 }
-
+/// Pintor personalizado para dibujar un borde de líneas discontinuas (dashed)
+/// alrededor de un rectángulo con bordes redondeados.
 class _DashedBorderPainter extends CustomPainter {
   final Color color;
 
@@ -105,7 +115,7 @@ class _DashedBorderPainter extends CustomPainter {
       ..color = color
       ..strokeWidth = strokeWidth
       ..style = PaintingStyle.stroke;
-
+// Creamos la ruta (Path): un rectángulo redondeado ajustado al tamaño del widget
     final path = Path()
       ..addRRect(RRect.fromRectAndRadius(
         Rect.fromLTWH(
@@ -130,7 +140,8 @@ class _DashedBorderPainter extends CustomPainter {
       }
     }
   }
-
+// Define cuándo Flutter debe volver a pintar el widget.
+  // En este caso, solo repinta si cambiamos el color del borde.
   @override
   bool shouldRepaint(covariant _DashedBorderPainter old) => old.color != color;
 }

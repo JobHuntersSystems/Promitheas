@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:promitheas/core/router/router_names.dart';
 import 'package:promitheas/core/theme/theme_provider.dart';
 import 'package:promitheas/shared/widgets/page_header.dart';
+import 'package:promitheas/features/auth/providers/auth_provider.dart';
 import 'package:promitheas/features/profile/providers/profile_provider.dart';
 
 class ProfileViewScreen extends ConsumerWidget {
@@ -174,7 +175,11 @@ class ProfileViewScreen extends ConsumerWidget {
                         Center(
                           child: TextButton.icon(
                             style: TextButton.styleFrom(foregroundColor: Colors.redAccent),
-                            onPressed: () => context.go(RouteNames.login),
+                            onPressed: () async {
+                              ref.invalidate(profileProvider);
+                              await ref.read(authFormProvider.notifier).signOut();
+                              if (context.mounted) context.go(RouteNames.login);
+                            },
                             icon: const Icon(Icons.logout_rounded),
                             label: const Text('LOG OUT', style: TextStyle(fontWeight: FontWeight.w600)),
                           ),
