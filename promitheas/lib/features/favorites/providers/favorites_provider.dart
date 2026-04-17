@@ -16,7 +16,7 @@ final folderProductsProvider =
   final repository = ref.read(favProductRepositoryProvider);
   return repository.getProductsByFolder(folderId);
 });
-
+//productos que no tienen carpeta assignada
 final freeProductsProvider = FutureProvider<List<FavoriteProduct>>((ref) {
   final repository = ref.read(favProductRepositoryProvider);
   return repository.getfreeProducts();

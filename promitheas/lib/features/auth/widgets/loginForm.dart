@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:promitheas/shared/widgets/decoration.dart';
 
+/// Formulario reutilizable exclusivo para el inicio de sesión.
+/// Recibe la [formKey] y los controladores desde la pantalla principal (su padre) 
+/// para que la vista solo se encargue de "dibujar" y delegue la lógica de negocio.
+
 class LoginForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailCtrl;

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:promitheas/shared/widgets/decoration.dart';
 
+/// Formulario reutilizable para el registro de nuevos usuarios.
+/// Recibe todos los controladores y funciones necesarias desde su widget padre
 class SignupForm extends StatefulWidget {
   final GlobalKey<FormState> formKey;
   final TextEditingController emailCtrl;
@@ -35,11 +37,14 @@ class _SignupFormState extends State<SignupForm> {
 
   @override
   Widget build(BuildContext context) {
+    // El widget Form envuelve todos los campos y usa la formKey para poder
+    // validar todos los TextFormFields a la vez cuando se presiona el botón "Submit".
     return Form(
       key: widget.formKey,
       child: Column(
         children: [
           const SizedBox(height: 8),
+          // --- CAMPO EMAIL ---
           TextFormField(
             controller: widget.emailCtrl,
             keyboardType: TextInputType.emailAddress,
@@ -48,6 +53,7 @@ class _SignupFormState extends State<SignupForm> {
             validator: (v) => (v == null || v.isEmpty) ? 'Enter your email' : null,
           ),
           const SizedBox(height: 16),
+          // --- CAMPO CONTRASEÑA ---
           TextFormField(
             controller: widget.passCtrl,
             obscureText: _obscurePass,
@@ -64,6 +70,7 @@ class _SignupFormState extends State<SignupForm> {
             validator: (v) => (v == null || v.length < 6) ? 'Minimum 6 characters' : null,
           ),
           const SizedBox(height: 16),
+          // --- CAMPO CONFIRMAR CONTRASEÑA ---
           TextFormField(
             controller: widget.confirmCtrl,
             obscureText: _obscureConfirm,
@@ -84,6 +91,7 @@ class _SignupFormState extends State<SignupForm> {
             },
           ),
           const SizedBox(height: 16),
+          // --- CAMPOS NOMBRE Y APELLIDO (En la misma fila) ---
           Row(
             children: [
               Expanded(
@@ -108,6 +116,7 @@ class _SignupFormState extends State<SignupForm> {
             ],
           ),
           const SizedBox(height: 16),
+          // --- CAMPO TELÉFONO (Opcional) ---
           TextFormField(
             controller: widget.phoneCtrl,
             keyboardType: TextInputType.phone,
@@ -115,6 +124,7 @@ class _SignupFormState extends State<SignupForm> {
             decoration: CustomInputDeco.get(context, 'Phone (optional)', Icons.phone_outlined),
           ),
           const SizedBox(height: 16),
+          // --- CAMPO CUMPLEAÑOS (Opcional) ---
           GestureDetector(
             onTap: widget.onPickBirthday,
             child: AbsorbPointer(

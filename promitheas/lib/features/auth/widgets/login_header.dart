@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+/// Widget visual que representa la cabecera superior de la pantalla de autenticación.
+/// Muestra el logotipo de la aplicación con un efecto de elevación (sombra)
+/// y el nombre de la app estilizado debajo.
+
 class LoginHeader extends StatelessWidget {
   const LoginHeader({super.key});
 

@@ -3,6 +3,8 @@ import 'package:shimmer/shimmer.dart';
 import 'package:promitheas/core/theme/app_colors.dart';
 import 'package:promitheas/features/favorites/models/favorite_folder.dart';
 
+/// Tarjeta interactiva que representa una carpeta de favoritos.
+/// Muestra el icono de la carpeta, su nombre y la cantidad de productos que contiene.
 class FolderCard extends StatelessWidget {
   const FolderCard({
     super.key,
@@ -19,6 +21,7 @@ class FolderCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // GestureDetector envuelve toda la tarjeta para capturar las interacciones del usuario
     return GestureDetector(
       onTap: onTap,
       onLongPress: onLongPress,
@@ -39,6 +42,7 @@ class FolderCard extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              // --- SECCIÓN SUPERIOR: Iconos ---
               Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -52,6 +56,9 @@ class FolderCard extends StatelessWidget {
                     child: Icon(Icons.folder_rounded, size: 26, color: color),
                   ),
                   const Spacer(),
+                  // Botón de opciones (tres puntos)
+                  // Se le añade su propio GestureDetector por si el usuario prefiere 
+                  // tocar aquí en lugar de mantener pulsada toda la tarjeta.
                   GestureDetector(
                     onTap: onLongPress,
                     child: Padding(
@@ -66,6 +73,8 @@ class FolderCard extends StatelessWidget {
                 ],
               ),
               const Spacer(),
+              // --- SECCIÓN INFERIOR: Textos ---
+              // Nombre de la carpeta
               Text(
                 folder.folderName,
                 style: TextStyle(
@@ -93,6 +102,8 @@ class FolderCard extends StatelessWidget {
   }
 }
 
+/// "Esqueleto" animado (Skeleton Screen) que se muestra mientras los datos reales
+/// de las carpetas se están descargando desde Supabase.
 class FolderCardShimmer extends StatelessWidget {
   const FolderCardShimmer({super.key});
 

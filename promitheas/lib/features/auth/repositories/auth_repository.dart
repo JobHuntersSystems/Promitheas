@@ -7,22 +7,22 @@ final authRepositoryProvider = Provider<AuthRepository>((ref) {
   final supabase = ref.read(supabaseProvider);
   return AuthRepository(supabase);
 });
-
+/// Centraliza todas las peticiones de autenticación en un solo lugar.
 class AuthRepository {
   final SupabaseClient _supabase;
 
   AuthRepository(this._supabase);
-
+/// Obtiene el usuario actual de la sesión activa en el dispositivo.
   User? get currentUser => _supabase.auth.currentUser;
 
   Stream<AuthState> get authStateChanges => _supabase.auth.onAuthStateChange;
-
+/// Solicita el inicio de sesión a Supabase usando correo y contraseña.
   Future<AuthResponse> signIn({
     required String email,
     required String password,
   }) =>
       _supabase.auth.signInWithPassword(email: email, password: password);
-
+/// Registra un nuevo usuario en el sistema de autenticación de Supabase.
   Future<AuthResponse> signUp({
     required String email,
     required String password,
@@ -45,6 +45,6 @@ class AuthRepository {
       },
     );
   }
-
+/// Destruye la sesión activa en Supabase y limpia el almacenamiento local.
   Future<void> signOut() => _supabase.auth.signOut();
 }

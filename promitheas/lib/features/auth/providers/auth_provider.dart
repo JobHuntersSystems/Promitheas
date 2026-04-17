@@ -8,11 +8,11 @@ final authStateProvider = StreamProvider<AuthState>((ref) {
   return ref.read(authRepositoryProvider).authStateChanges;
 });
 
-/// Gestiona el estado del formulario: loading, error, éxito
+/// Gestiona el estado del formulario de autenticación (login y registro).
 class AuthFormNotifier extends AsyncNotifier<void> {
   @override
   Future<void> build() async {}
-
+/// Intenta iniciar sesión con un email y contraseña existentes.
   Future<String?> signIn({
     required String email,
     required String password,
@@ -32,7 +32,7 @@ class AuthFormNotifier extends AsyncNotifier<void> {
       return 'Unexpected error. Try again.';
     }
   }
-
+/// Registra un nuevo usuario en Supabase con sus datos personales.
   Future<String?> signUp({
     required String email,
     required String password,
@@ -62,6 +62,12 @@ class AuthFormNotifier extends AsyncNotifier<void> {
     }
   }
 
+  /// Cierra la sesión del usuario e invalida todos los providers de datos de usuario.
+  Future<void> signOut() async {
+    await ref.read(authRepositoryProvider).signOut();
+    ref.invalidateSelf();
+  }
+
   String _mapError(String message) {
     if (message.contains('Invalid login credentials')) {
       return 'Incorrect email or password.';
@@ -79,5 +85,7 @@ class AuthFormNotifier extends AsyncNotifier<void> {
   }
 }
 
+/// Proveedor global que expone la instancia de AuthFormNotifier.
+/// La interfaz de usuario usará este proveedor para escuchar el estado de carga
 final authFormProvider =
     AsyncNotifierProvider<AuthFormNotifier, void>(AuthFormNotifier.new);

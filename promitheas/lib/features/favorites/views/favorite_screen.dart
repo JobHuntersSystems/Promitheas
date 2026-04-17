@@ -9,6 +9,7 @@ import 'package:promitheas/features/favorites/widgets/folders_empty.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promitheas/core/router/router_names.dart';
 
+//pantalla principal de favoritos
 class FavoriteScreen extends ConsumerWidget {
   const FavoriteScreen({super.key});
 
@@ -19,6 +20,8 @@ class FavoriteScreen extends ConsumerWidget {
     final unclassifiedAsync = ref.watch(freeProductsProvider);
 
     return Scaffold(
+      // RefreshIndicator envuelve el scroll principal para implementar la clásica
+      // acción de "deslizar hacia abajo para recargar" (Pull-to-refresh).
       body: SafeArea(
         child: RefreshIndicator(
           color: AppColors.primaryFire,
@@ -28,13 +31,14 @@ class FavoriteScreen extends ConsumerWidget {
           },
           child: CustomScrollView(
             slivers: [
+              // --- SLIVER 1: Cabecera ---
               const SliverToBoxAdapter(
                 child: PageHeader(
                   icon: Icons.bookmark_rounded,
                   title: 'FAVORITES',
                 ),
               ),
-              
+              // --- SLIVER 2: Cuadrícula de Carpetas ---
               SliverToBoxAdapter(
                 child: foldersAsync.when(
                   loading: () => const FoldersGridLoading(),
@@ -43,7 +47,7 @@ class FavoriteScreen extends ConsumerWidget {
                   },
                 ),
               ),
-
+// --- SLIVER 3: Productos sin clasificar ---
               SliverToBoxAdapter(
                 child: unclassifiedAsync.when(
                   loading: () => const SizedBox.shrink(),
@@ -81,6 +85,7 @@ class FavoriteScreen extends ConsumerWidget {
                               final product = products[index].product;
                               if (product == null) return const SizedBox.shrink();
                               
+                              // Navegación limpia usando GoRouter pasando el ID del producto
                               return ProductCard(
                                 product: product,
                                 onTap: () {

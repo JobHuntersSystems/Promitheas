@@ -9,6 +9,7 @@ import 'package:promitheas/core/router/router_names.dart';
 import 'package:promitheas/core/theme/app_colors.dart';
 import 'package:promitheas/shared/widgets/status_banner.dart';
 
+/// Pantalla principal de autenticación.
 class LoginScreen extends ConsumerStatefulWidget {
   const LoginScreen({super.key});
 
@@ -17,13 +18,14 @@ class LoginScreen extends ConsumerStatefulWidget {
 }
 
 class _LoginScreenState extends ConsumerState<LoginScreen>
+    /// Controlador para alternar entre "Login" (0) y "Registro" (1).
     with SingleTickerProviderStateMixin {
   late final TabController _tabController;
   bool get _isLogin => _tabController.index == 0;
 
   final _loginKey = GlobalKey<FormState>();
   final _signupKey = GlobalKey<FormState>();
-
+/// Controladores de texto para capturar los inputs del usuario.
   final _emailCtrl = TextEditingController();
   final _passCtrl = TextEditingController();
   final _confirmCtrl = TextEditingController();
@@ -35,13 +37,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
   String? _errorMsg;
   bool _signupSuccess = false;
 
+/// Inicializa los controladores y añade un "listener" (escuchador) a las pestañas.
   @override
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _tabController.addListener(_onTabChanged);
   }
-
+/// Se ejecuta cada vez que el usuario cambia de pestaña.
+  /// Su propósito es limpiar errores viejos o mensajes de éxito para que no 
+  /// aparezcan en la pestaña equivocada.
   void _onTabChanged() {
     if (!_tabController.indexIsChanging) return;
     setState(() {
@@ -49,7 +54,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       _signupSuccess = false;
     });
   }
-
+/// Limpia la memoria
   @override
   void dispose() {
     _tabController
@@ -82,7 +87,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
     );
     if (picked != null) setState(() => _birthday = picked);
   }
-
+/// Función principal que gestiona el envío de los formularios.
   Future<void> _submit() async {
     final formKey = _isLogin ? _loginKey : _signupKey;
     if (!formKey.currentState!.validate()) return;
@@ -151,7 +156,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       ),
     );
   }
-
+/// Construye la tarjeta blanca/oscura central que contiene las pestañas y los formularios.
   Widget _buildCard(bool isLoading, bool isDark) {
     return Container(
       decoration: BoxDecoration(
@@ -216,7 +221,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       ),
     );
   }
-
+/// Construye la barra de pestañas (Login / Registro).
   Widget _buildTabBar(bool isDark) {
     return ClipRRect(
       borderRadius: const BorderRadius.vertical(top: Radius.circular(28)),
@@ -242,7 +247,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
       ),
     );
   }
-
+/// Construye el botón principal de acción.
   Widget _buildSubmitButton(bool isLoading) {
     return SizedBox(
       height: 52,
