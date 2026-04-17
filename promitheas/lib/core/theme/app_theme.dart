@@ -9,7 +9,6 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.backgroundLight,
       colorScheme: const ColorScheme.light(
         primary: AppColors.primaryFire,
-        background: AppColors.backgroundLight,
         surface: AppColors.surfaceLight,
       ),
       // Botón: Naranja con texto Blanco (como en tu mockup)
@@ -42,7 +41,6 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.backgroundDark,
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryFire,
-        background: AppColors.backgroundDark,
         surface: AppColors.surfaceDark,
       ),
       // Botón: Blanco con texto Naranja (como en tu mockup)
