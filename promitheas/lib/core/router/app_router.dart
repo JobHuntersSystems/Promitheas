@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promitheas/features/profile/views/profile_screen.dart';
 import 'package:promitheas/features/splash/splash.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-
 import 'package:promitheas/core/router/router_names.dart';
 import 'package:promitheas/features/auth/views/login_screen.dart';
 import 'package:promitheas/features/favorites/views/favorite_screen.dart';
 import 'package:promitheas/features/favorites/views/folder_screen.dart';
 import 'package:promitheas/features/home/views/home_screen.dart';
 import 'package:promitheas/features/product_detail/views/product_detail_screen.dart';
+import 'package:promitheas/features/profile/views/edit_profile_screen.dart';
 
 // Llaves maestras para controlar qué parte de la pantalla se actualiza
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -116,8 +117,14 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.profile,
-              builder: (context, state) =>
-                  const Scaffold(body: Center(child: Text('Perfil'))),
+              builder: (context, state) => ProfileViewScreen(),
+              routes: [
+                GoRoute(
+                  path: 'config',
+                  parentNavigatorKey: _rootNavigatorKey,
+                  builder: (context, state) => const EditProfileScreen(),
+                ),
+              ],
             ),
           ],
         ),
