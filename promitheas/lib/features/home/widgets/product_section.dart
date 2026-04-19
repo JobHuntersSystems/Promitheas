@@ -23,7 +23,7 @@ class ProductSection extends StatelessWidget {
       children: [
         _SectionTitle(title: title),
         SizedBox(
-          height: 190,
+          height: 280,
           child: _ProductRow(products: products, onTap: onProductTap),
         ),
       ],

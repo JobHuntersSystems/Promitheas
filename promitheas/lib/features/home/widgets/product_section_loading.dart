@@ -11,7 +11,7 @@ class ProductSectionLoading extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _SectionTitle(title: title),
-        SizedBox(height: 190, child: _ShimmerRow()),
+        SizedBox(height: 280, child: _ShimmerRow()),
       ],
     );
   }

@@ -11,6 +11,8 @@ class ProductSummary {
     this.storeLogoUrl,
     this.sectionTag,
   });
+  static const String _storageBaseUrl =
+      'https://bocattobgdurtfxniofx.supabase.co/storage/v1/object/public/';
 
   final int id;
   final String name;
@@ -32,12 +34,22 @@ class ProductSummary {
 
   double? get discountPercent {
     if (!hasDiscount) return null;
-    return ((previousPrice! - currentPrice!) / previousPrice!) * 100;
+    return ((previousPrice! - currentPrice) / previousPrice!) * 100;
   }
 
   double get savingsAmount {
     if (!hasDiscount) return 0;
     return previousPrice! - currentPrice;
+  }
+
+  static String _buildPublicImageUrl(String? path) {
+    if (path == null || path.trim().isEmpty) return '';
+
+    if (path.startsWith('http://') || path.startsWith('https://')) {
+      return path;
+    }
+
+    return '$_storageBaseUrl$path';
   }
 
   ProductSummary copyWith({
@@ -70,7 +82,7 @@ class ProductSummary {
     return ProductSummary(
       id: json['product_id'] as int,
       name: json['product_name'] as String? ?? '',
-      imageUrl: json['image_path'] as String? ?? '',
+      imageUrl: _buildPublicImageUrl(json['image_path'] as String?),
       currentPrice: (json['current_price'] as num?)?.toDouble() ?? 0,
       previousPrice: (json['previous_price'] as num?)?.toDouble(),
       categoryName: json['category_name'] as String? ?? '',
