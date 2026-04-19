@@ -14,27 +14,39 @@ class HomeRepository {
 
   final SupabaseClient _supabase;
 
-  Future<List<ProductSummary>> getPopularProducts({int limit = 5}) async {
+  static const int defaultLimit = 6;
+
+  static const String _popularView = 'popular_product_cards_v';
+  static const String _bestPriceView = 'best_price_products_v';
+  static const String _discoveryView = 'discovery_products_v';
+
+  Future<List<ProductSummary>> getPopularProducts({
+    int limit = defaultLimit,
+  }) async {
     final response = await _supabase
-        .from('popular_product_cards_v')
+        .from(_popularView)
         .select()
         .limit(limit);
 
     return _mapProducts(response);
   }
 
-  Future<List<ProductSummary>> getBestPriceProducts({int limit = 5}) async {
+  Future<List<ProductSummary>> getBestPriceProducts({
+    int limit = defaultLimit,
+  }) async {
     final response = await _supabase
-        .from('best_price_products_v')
+        .from(_bestPriceView)
         .select()
         .limit(limit);
 
     return _mapProducts(response);
   }
 
-  Future<List<ProductSummary>> getDiscoveryProducts({int limit = 4}) async {
+  Future<List<ProductSummary>> getDiscoveryProducts({
+    int limit = defaultLimit,
+  }) async {
     final response = await _supabase
-        .from('discovery_products_v')
+        .from(_discoveryView)
         .select()
         .limit(limit);
 

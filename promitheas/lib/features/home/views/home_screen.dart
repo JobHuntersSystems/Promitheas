@@ -93,9 +93,12 @@ class _HomeSection extends StatelessWidget {
   Widget build(BuildContext context) {
     return asyncProducts.when(
       loading: () => ProductSectionLoading(title: title),
-      error: (error, stackTrace) => _SectionError(
-        title: title,
-        message: 'No se pudo cargar esta sección.',
+      error: (error, stackTrace) => Padding(
+        padding: const EdgeInsets.all(20),
+        child: Text(
+          'Error: $error',
+          style: const TextStyle(color: Colors.red),
+        ),
       ),
       data: (products) {
         if (products.isEmpty) return const EmptySection();
