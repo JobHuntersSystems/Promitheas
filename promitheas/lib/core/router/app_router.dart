@@ -69,13 +69,10 @@ final appRouter = GoRouter(
               // Sub-ruta para el detalle del producto (pantalla completa, oculta la barra)
               routes: [
                 GoRoute(
-                  path: RouteNames.productDetail,
-                  parentNavigatorKey: _rootNavigatorKey,
+                  path: '/product/:id',
                   builder: (context, state) {
-                    final id = state.pathParameters['id'] ?? '';
-                    return ProductDetailScreen(
-                      productId: id,
-                    ); // ← antes era Text(...)
+                    final id = int.parse(state.pathParameters['id']!);
+                    return ProductDetailScreen(productId: id);
                   },
                 ),
               ],
