@@ -44,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
 
               SliverToBoxAdapter(
                 child: _HomeSection(
-                  title: 'POPULAR NOW',
+                  title: 'POPULAR PRODUCTS',
                   asyncProducts: popularAsync,
                   onProductTap: (id) =>
                       context.go(RouteNames.productDetailPath(id.toString())),

@@ -50,6 +50,11 @@ dependencies:
   url_launcher: ^6.3.2
 
   path_provider: ^2.0.0
+  # --- GEO-LOCATION
+  flutter_map: any
+  latlong2: any
+  geolocator: any
+  flutter_map_location_marker: any
 
   # --- SPLAH ---
   flutter_native_splash: ^2.4.7
