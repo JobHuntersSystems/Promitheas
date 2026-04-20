@@ -57,6 +57,10 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
                     ),
                   ],
                 ),
+                
+                //--------------------------------------------------------
+                //                  Barra de búsqueda
+                //--------------------------------------------------------
                 child: TextField(
                   controller: _searchController,
                   style: theme.textTheme.bodyLarge?.copyWith(
