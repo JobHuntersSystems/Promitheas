@@ -77,6 +77,7 @@ class FoldersGrid extends ConsumerWidget {
     if (confirmed == true) {
       await ref.read(favFolderRepositoryProvider).deleteFolder(folder.folderId);
       ref.invalidate(foldersProvider);
+      ref.invalidate(freeProductsProvider);
     }
   }
 }
