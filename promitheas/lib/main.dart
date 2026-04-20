@@ -32,7 +32,7 @@ class PromitheasApp extends ConsumerWidget {
   const PromitheasApp({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context, WidgetRef ref){
     final currentThemeMode = ref.watch(themeProvider);
     ref.watch(authStateProvider); // mantiene el stream activo para ensureUserProfile
 

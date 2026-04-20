@@ -60,4 +60,15 @@ class FavProductRepository {
 
     return (data as List).map((e) => FavoriteProduct.fromJson(e)).toList();
   }
+  Future<FavoriteProduct?> getFavoriteByProductId(int productId) async {
+    final data = await _supabase
+        .from('favorite_products')
+        .select(_productSelect)
+        .eq('user_id', _userId)
+        .eq('product_id', productId)
+        .maybeSingle(); // 💡 Pista clave: maybeSingle no lanza error si no hay resultados, devuelve null.
+
+    if (data == null) return null;
+    return FavoriteProduct.fromJson(data);
+  }
 }
