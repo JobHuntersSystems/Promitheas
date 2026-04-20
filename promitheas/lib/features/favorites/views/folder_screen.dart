@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:promitheas/core/theme/app_colors.dart';
 import 'package:promitheas/features/favorites/providers/favorites_provider.dart';
+import 'package:promitheas/features/favorites/widgets/all_folders.dart';
 import 'package:promitheas/shared/widgets/product_card.dart';
 import 'package:go_router/go_router.dart';
 import 'package:promitheas/core/router/router_names.dart';
@@ -23,7 +25,10 @@ class FolderScreen extends ConsumerWidget {
     return Scaffold(
       // Usamos el nombre de la carpeta como título dinámico en la barra superior.
       appBar: AppBar(title: Text(folderName)),
-      body: productsAsync.when(
+      body: Column(
+        children: [
+          Expanded(
+            child: productsAsync.when(
         loading: () => const Center(child: CircularProgressIndicator()),
         error: (_, __) => const Center(child: Text('Error loading products')),
         data: (favorites) {
@@ -72,6 +77,46 @@ class FolderScreen extends ConsumerWidget {
             ),
           );
         },
+      ),
+          ),
+          Padding(
+            padding: EdgeInsets.fromLTRB(
+                24, 8, 24, 16 + MediaQuery.of(context).padding.bottom),
+            child: ElevatedButton.icon(
+              onPressed: () {
+                final existingIds = productsAsync.asData?.value
+                        .map((f) => f.productId)
+                        .toSet() ??
+                    {};
+                showModalBottomSheet(
+                  context: context,
+                  isScrollControlled: true,
+                  builder: (_) => AddToFolderSheet(
+                    folderId: folderId,
+                    existingProductIds: existingIds,
+                  ),
+                );
+              },
+              icon: const Icon(Icons.add, color: Colors.white),
+              label: const Text(
+                'Add products',
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 16,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColors.primaryFire,
+                elevation: 4,
+                shadowColor: Colors.black26,
+                shape: const StadiumBorder(),
+                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 24),
+                minimumSize: const Size(double.infinity, 52),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

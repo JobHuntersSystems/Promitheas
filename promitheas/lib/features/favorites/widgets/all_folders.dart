@@ -70,7 +70,7 @@ class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
                   itemBuilder: (context, index) {
                     final fav = candidates[index];
                     final product = fav.product!;
-                    final isSelected = _selected.contains(fav.productId);
+                    final isSelected = _selected.contains(fav.favoriteId);
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: CheckboxListTile(
@@ -78,9 +78,9 @@ class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
                       onChanged: (checked) {
                         setState(() {
                           if (checked == true) {
-                            _selected.add(fav.productId);
+                            _selected.add(fav.favoriteId);
                           } else {
-                            _selected.remove(fav.productId);
+                            _selected.remove(fav.favoriteId);
                           }
                         });
                       },
@@ -142,8 +142,8 @@ class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
     setState(() => _isLoading = true);
     try {
       final repo = ref.read(favProductRepositoryProvider);
-      for (final productId in _selected) {
-        await repo.moveProductToFolder(productId, widget.folderId);
+      for (final favoriteId in _selected) {
+        await repo.moveToFolder(favoriteId, widget.folderId);
       }
       ref.invalidate(folderProductsProvider(widget.folderId));
       ref.invalidate(foldersProvider);

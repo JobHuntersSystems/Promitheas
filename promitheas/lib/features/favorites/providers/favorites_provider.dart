@@ -29,5 +29,5 @@ final freeProductsProvider = FutureProvider<List<FavoriteProduct>>((ref) {
 
 final allFavoritesProvider = FutureProvider<List<FavoriteProduct>>((ref) {
   final repository = ref.read(favProductRepositoryProvider);
-  return repository.getAllFavoritesForUser();
+  return repository.getfreeProducts();
 });
