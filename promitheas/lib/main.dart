@@ -25,7 +25,15 @@ void main() async {
   // // Inicializamos la conexión con supabase
    await Supabase.initialize(url: supabaseUrl, anonKey: supabaseAnonKey);
 
-  runApp(const ProviderScope(child: PromitheasApp()));
+  // Leemos el JSON guardado UNA VEZ antes de arrancar la app
+  final isDark = await loadDarkMode();
+
+  runApp(ProviderScope(
+    overrides: [
+      themeProvider.overrideWith(() => ThemeNotifier(isDark)),
+    ],
+    child: const PromitheasApp(),
+  ));
 }
 
 class PromitheasApp extends ConsumerWidget {
