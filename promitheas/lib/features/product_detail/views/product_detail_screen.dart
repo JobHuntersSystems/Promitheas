@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import '../widgets/favorite_button.dart';
 import '../providers/physical_store_provider.dart';
 import '../providers/product_detail_provider.dart';
+import '../providers/chart_range_selector.dart';
 import '../providers/selected_stores_provider.dart';
 import '../widgets/physical_store_map_card.dart';
 import '../widgets/price_history_chart.dart';
@@ -63,13 +64,28 @@ class ProductDetailScreen extends ConsumerWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Price history',
-                          style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                                fontWeight: FontWeight.w800,
-                              ),
+                        Row(
+                          children: [
+                            Text(
+                              'Price history',
+                              style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                    fontWeight: FontWeight.w800,
+                                  ),
+                            ),
+                            const Spacer(),
+                            TextButton.icon(
+                              onPressed: () {},
+                              icon: const Icon(Icons.show_chart_rounded),
+                              label: const Text('History'),
+                            ),
+                          ],
                         ),
                         const SizedBox(height: 12),
+
+                        ChartRangeSelector(productId: productId),
+
+                        const SizedBox(height: 14),
+
                         StoreSelector(
                           offers: product.storeOffers,
                           selectedStoreIds: effectiveSelected,
@@ -105,8 +121,11 @@ class ProductDetailScreen extends ConsumerWidget {
                                 .state = <int>{product.bestStoreId};
                           },
                         ),
+
                         const SizedBox(height: 18),
+
                         PriceHistoryChart(
+                          productId: productId,
                           offers: product.storeOffers,
                           selectedStoreIds: effectiveSelected,
                         ),
