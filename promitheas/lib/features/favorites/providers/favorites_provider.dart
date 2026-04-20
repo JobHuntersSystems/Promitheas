@@ -9,6 +9,11 @@ final foldersProvider = FutureProvider<List<FavoriteFolder>>((ref) {
   final repository = ref.read(favFolderRepositoryProvider);
   return repository.getFolders();
 });
+final productFavoriteStateProvider =
+    FutureProvider.family<FavoriteProduct?, int>((ref, productId) async {
+  final repository = ref.read(favProductRepositoryProvider);
+  return repository.getFavoriteByProductId(productId);
+});
 
 // Productos de la carpeta concreta
 final folderProductsProvider =

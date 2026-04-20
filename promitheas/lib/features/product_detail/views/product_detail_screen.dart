@@ -7,7 +7,7 @@ import '../widgets/price_history_chart.dart';
 import '../widgets/product_hero_card.dart';
 import '../widgets/store_offer_list.dart';
 import '../widgets/store_selector.dart';
-
+import '../widgets/favorite_button.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
   const ProductDetailScreen({
@@ -23,109 +23,138 @@ class ProductDetailScreen extends ConsumerWidget {
     final selectedStoreIds = ref.watch(selectedStoreIdsProvider(productId));
 
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Product detail'),
-      ),
-      body: asyncDetail.when(
-        loading: () => const Center(child: CircularProgressIndicator()),
-        error: (error, stack) => Center(
-          child: Padding(
-            padding: const EdgeInsets.all(24),
-            child: Text(
-              'No se pudo cargar el detalle.\n$error',
-              textAlign: TextAlign.center,
+      // 1. ELIMINAMOS la AppBar estándar
+      // appBar: AppBar(...), 
+      
+      // 2. AGREGAMOS SafeArea y la nueva estructura
+      body: SafeArea(
+        child: Column(
+          children: [
+            // 3. NUESTRO HEADER PERSONALIZADO
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios_new_rounded),
+                    onPressed: () => Navigator.of(context).pop(),
+                  ),
+                  // Aquí integramos el widget que adaptamos antes
+                  FavoriteButton(
+                    productId: productId,
+                    iconSize: 28,
+                  ),
+                ],
+              ),
             ),
-          ),
-        ),
-        data: (product) {
-          final effectiveSelected = selectedStoreIds.isEmpty
-              ? {product.bestStoreId}
-              : selectedStoreIds;
 
-          return RefreshIndicator(
-            onRefresh: () async {
-              ref.invalidate(productDetailProvider(productId));
-            },
-            child: ListView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.all(16),
-              children: [
-                ProductHeroCard(product: product),
-                const SizedBox(height: 18),
-                _SectionCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Price history',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                      const SizedBox(height: 12),
-                      StoreSelector(
-                        offers: product.storeOffers,
-                        selectedStoreIds: effectiveSelected,
-                        onToggleStore: (storeId) {
-                          final notifier = ref.read(
-                            selectedStoreIdsProvider(productId).notifier,
-                          );
-                          final current = <int>{...effectiveSelected};
-                          if (current.contains(storeId)) {
-                            current.remove(storeId);
-                          } else {
-                            current.add(storeId);
-                          }
-                          if (current.isEmpty) {
-                            current.add(product.bestStoreId);
-                          }
-                          notifier.state = current;
-                        },
-                        onSelectAll: () {
-                          ref
-                              .read(selectedStoreIdsProvider(productId).notifier)
-                              .state = product.storeOffers
-                              .map((e) => e.storeId)
-                              .toSet();
-                        },
-                        onResetToBest: () {
-                          ref
-                              .read(selectedStoreIdsProvider(productId).notifier)
-                              .state = {product.bestStoreId};
-                        },
-                      ),
-                      const SizedBox(height: 18),
-                      PriceHistoryChart(
-                        offers: product.storeOffers,
-                        selectedStoreIds: effectiveSelected,
-                      ),
-                    ],
+            // 4. TU CONTENIDO ACTUAL ENVUELTO EN UN EXPANDED
+            Expanded(
+              child: asyncDetail.when(
+                loading: () => const Center(child: CircularProgressIndicator()),
+                error: (error, stack) => Center(
+                  child: Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: Text(
+                      'No se pudo cargar el detalle.\n$error',
+                      textAlign: TextAlign.center,
+                    ),
                   ),
                 ),
-                const SizedBox(height: 18),
-                _SectionCard(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        'Available stores',
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                              fontWeight: FontWeight.w800,
-                            ),
-                      ),
-                      const SizedBox(height: 16),
-                      StoreOfferList(
-                        offers: product.storeOffers,
-                        bestStoreId: product.bestStoreId,
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(height: 24),
-              ],
+                data: (product) {
+                  final effectiveSelected = selectedStoreIds.isEmpty
+                      ? {product.bestStoreId}
+                      : selectedStoreIds;
+
+                  return RefreshIndicator(
+                    onRefresh: () async {
+                      ref.invalidate(productDetailProvider(productId));
+                    },
+                    child: ListView(
+                      physics: const AlwaysScrollableScrollPhysics(),
+                      padding: const EdgeInsets.all(16),
+                      children: [
+                        ProductHeroCard(product: product),
+                        const SizedBox(height: 18),
+                        _SectionCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Price history',
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                              ),
+                              const SizedBox(height: 12),
+                              StoreSelector(
+                                offers: product.storeOffers,
+                                selectedStoreIds: effectiveSelected,
+                                onToggleStore: (storeId) {
+                                  final notifier = ref.read(
+                                    selectedStoreIdsProvider(productId).notifier,
+                                  );
+                                  final current = <int>{...effectiveSelected};
+                                  if (current.contains(storeId)) {
+                                    current.remove(storeId);
+                                  } else {
+                                    current.add(storeId);
+                                  }
+                                  if (current.isEmpty) {
+                                    current.add(product.bestStoreId);
+                                  }
+                                  notifier.state = current;
+                                },
+                                onSelectAll: () {
+                                  ref
+                                      .read(selectedStoreIdsProvider(productId).notifier)
+                                      .state = product.storeOffers
+                                      .map((e) => e.storeId)
+                                      .toSet();
+                                },
+                                onResetToBest: () {
+                                  ref
+                                      .read(selectedStoreIdsProvider(productId).notifier)
+                                      .state = {product.bestStoreId};
+                                },
+                              ),
+                              const SizedBox(height: 18),
+                              PriceHistoryChart(
+                                offers: product.storeOffers,
+                                selectedStoreIds: effectiveSelected,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 18),
+                        _SectionCard(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Available stores',
+                                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                                      fontWeight: FontWeight.w800,
+                                    ),
+                              ),
+                              const SizedBox(height: 16),
+                              StoreOfferList(
+                                offers: product.storeOffers,
+                                bestStoreId: product.bestStoreId,
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+                    ),
+                  );
+                },
+              ),
             ),
-          );
-        },
+          ],
+        ),
       ),
     );
   }
