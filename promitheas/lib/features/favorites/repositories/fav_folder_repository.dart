@@ -34,8 +34,9 @@ class FavFolderRepository {
       'folder_name': folderName.trim(),
     });
   }
-/// Elimina una carpeta. Los productos que solo estaban en ella vuelven a Other favorites.
-  /// Los que ya existen en otra ubicación no se modifican.
+/// Elimina una carpeta y gestiona sus productos:
+  /// - Sin otras entradas → pasa a Other favorites
+  /// - Ya existe en otro sitio → se borra esta entrada para evitar duplicados
   Future<void> deleteFolder(int folderId) async {
     final inFolder = await _supabase
         .from('favorite_products')
@@ -47,14 +48,19 @@ class FavFolderRepository {
       final favoriteId = row['favorite_id'] as int;
       final productId = row['product_id'] as int;
 
-      final elsewhere = await _supabase
+      final others = await _supabase
           .from('favorite_products')
           .select('favorite_id')
           .eq('user_id', _userId)
           .eq('product_id', productId)
           .neq('favorite_id', favoriteId);
 
-      if ((elsewhere as List).isEmpty) {
+      if ((others as List).isNotEmpty) {
+        await _supabase
+            .from('favorite_products')
+            .delete()
+            .eq('favorite_id', favoriteId);
+      } else {
         await _supabase
             .from('favorite_products')
             .update({'folder_id': null})
