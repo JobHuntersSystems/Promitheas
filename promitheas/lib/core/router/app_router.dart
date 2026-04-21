@@ -11,6 +11,8 @@ import 'package:promitheas/features/favorites/views/folder_screen.dart';
 import 'package:promitheas/features/home/views/home_screen.dart';
 import 'package:promitheas/features/product_detail/views/product_detail_screen.dart';
 import 'package:promitheas/features/profile/views/edit_profile_screen.dart';
+import 'package:promitheas/features/search/search.dart';
+
 
 // Llaves maestras para controlar qué parte de la pantalla se actualiza
 final _rootNavigatorKey = GlobalKey<NavigatorState>();
@@ -84,8 +86,7 @@ final appRouter = GoRouter(
           routes: [
             GoRoute(
               path: RouteNames.search,
-              builder: (context, state) =>
-                  const Scaffold(body: Center(child: Text('Búsqueda'))),
+              builder: (context, state) => const SearchScreen()
             ),
           ],
         ),

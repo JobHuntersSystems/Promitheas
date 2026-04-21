@@ -41,15 +41,14 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
         final isFavorite = favoriteProduct != null;
 
         return GestureDetector(
-          onLongPress: () => _showFoldersSheet(context, ref),
+          onLongPress: _isMutating ? null : () => _showFoldersSheet(context, ref),
           child: IconButton(
             tooltip: 'Favorites',
-            icon: _isMutating 
-                // Opcional: puedes poner un mini spinner aquí, o simplemente dejar el icono
+            icon: _isMutating
                 ? SizedBox(
-                    width: widget.iconSize, 
-                    height: widget.iconSize, 
-                    child: const CircularProgressIndicator(strokeWidth: 2)
+                    width: widget.iconSize,
+                    height: widget.iconSize,
+                    child: const CircularProgressIndicator(strokeWidth: 2),
                   )
                 : Icon(
                     isFavorite
@@ -57,40 +56,41 @@ class _FavoriteButtonState extends ConsumerState<FavoriteButton> {
                         : Icons.bookmark_border_rounded,
                     size: widget.iconSize,
                   ),
-            // 3. Si está mutando, deshabilitamos el botón pasando null
-            onPressed: _isMutating ? null : () async {
-              // Bloqueamos la UI inmediatamente
-              setState(() => _isMutating = true);
+            onPressed: _isMutating
+                ? null
+                : () async {
+                    setState(() => _isMutating = true);
 
-              try {
-                final repository = ref.read(favProductRepositoryProvider);
+                    try {
+                      final repository = ref.read(favProductRepositoryProvider);
 
-                if (isFavorite) {
-                  await repository.removeFavorite(favoriteProduct.favoriteId);
-                } else {
-                  await repository.addFavorite(widget.productId);
-                }
+                      if (isFavorite) {
+                        await repository.removeFavorite(favoriteProduct.favoriteId);
+                      } else {
+                        await repository.addFavorite(widget.productId);
+                      }
 
-                ref.invalidate(productFavoriteStateProvider(widget.productId));
-                ref.invalidate(freeProductsProvider);
+                      ref.invalidate(productFavoriteStateProvider(widget.productId));
+                      ref.invalidate(freeProductsProvider);
 
-                if (context.mounted) {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: Text(
-                        isFavorite ? 'Removed from favorites' : 'Saved to favorites',
-                      ),
-                      duration: Duration(milliseconds: 1500)
-                    ),
-                  );
-                }
-              } finally {
-                // 4. Aseguramos desbloquear la UI siempre, incluso si hay error
-                if (mounted) {
-                  setState(() => _isMutating = false);
-                }
-              }
-            },
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              isFavorite
+                                  ? 'Removed from favorites'
+                                  : 'Saved to favorites',
+                            ),
+                            duration: const Duration(milliseconds: 1500),
+                          ),
+                        );
+                      }
+                    } finally {
+                      if (mounted) {
+                        setState(() => _isMutating = false);
+                      }
+                    }
+                  },
           ),
         );
       },

@@ -14,7 +14,7 @@ class HomeRepository {
 
   final SupabaseClient _supabase;
 
-  static const int defaultLimit = 6;
+  static const int defaultLimit = 15;
 
   static const String _popularView = 'popular_product_cards_v';
   static const String _bestPriceView = 'best_price_products_v';
@@ -37,6 +37,7 @@ class HomeRepository {
     final response = await _supabase
         .from(_bestPriceView)
         .select()
+        .order('discount_percent', ascending: false)
         .limit(limit);
 
     return _mapProducts(response);
@@ -48,6 +49,7 @@ class HomeRepository {
     final response = await _supabase
         .from(_discoveryView)
         .select()
+        .order('product_name', ascending: true)
         .limit(limit);
 
     return _mapProducts(response);
