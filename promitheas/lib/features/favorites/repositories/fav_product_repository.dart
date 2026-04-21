@@ -16,7 +16,8 @@ class FavProductRepository {
   String get _userId => _supabase.auth.currentUser!.id;
 /// Constante privada que define qué columnas queremos obtener de la base de datos.
   static const _productSelect =
-      'favorite_id, user_id, product_id, created_at, folder_id, products(product_id, product_name, description, image_path)';
+      'favorite_id, user_id, product_id, created_at, folder_id, '
+      'products(product_id, product_name, image_path, links_scraping(current_price, previous_price, stores(store_name)))';
 /// Obtiene todos los productos favoritos que están dentro de una carpeta específica.
   Future<List<FavoriteProduct>> getProductsByFolder(int folderId) async {
     final data = await _supabase
