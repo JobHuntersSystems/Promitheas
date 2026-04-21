@@ -24,7 +24,7 @@ class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
 
   @override
   Widget build(BuildContext context) {
-    final allFavoritesAsync = ref.watch(allFavoritesProvider);
+    final allFavoritesAsync = ref.watch(freeProductsProvider);
 
     return allFavoritesAsync.when(
       loading: () => const Center(child: CircularProgressIndicator()),

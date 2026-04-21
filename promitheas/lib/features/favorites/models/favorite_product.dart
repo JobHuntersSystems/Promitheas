@@ -17,7 +17,34 @@ class FavoriteProduct {
   final ProductSummary? product;
 
   factory FavoriteProduct.fromJson(Map<String, dynamic> json) {
-    final productJson = json['products'];
+    final productJson = json['products'] as Map<String, dynamic>?;
+
+    ProductSummary? product;
+    if (productJson != null) {
+      final links = productJson['links_scraping'] as List<dynamic>? ?? [];
+
+      Map<String, dynamic>? bestLink;
+      double bestPrice = double.maxFinite;
+      for (final link in links) {
+        final map = link as Map<String, dynamic>;
+        final price = (map['current_price'] as num?)?.toDouble() ?? double.maxFinite;
+        if (price < bestPrice) {
+          bestPrice = price;
+          bestLink = map;
+        }
+      }
+
+      final storeMap = bestLink?['stores'] as Map<String, dynamic>?;
+
+      product = ProductSummary.fromJson({
+        'product_id': productJson['product_id'],
+        'product_name': productJson['product_name'],
+        'image_path': productJson['image_path'],
+        'current_price': bestLink?['current_price'],
+        'previous_price': bestLink?['previous_price'],
+        'store_name': storeMap?['store_name'],
+      });
+    }
 
     return FavoriteProduct(
       favoriteId: json['favorite_id'] as int,
@@ -25,9 +52,7 @@ class FavoriteProduct {
       productId: json['product_id'] as int,
       createdAt: DateTime.parse(json['created_at'] as String),
       folderId: json['folder_id'] as int?,
-      product: productJson != null
-          ? ProductSummary.fromJson(productJson as Map<String, dynamic>)
-          : null,
+      product: product,
     );
   }
 
