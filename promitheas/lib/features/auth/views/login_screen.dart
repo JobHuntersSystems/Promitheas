@@ -242,7 +242,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen>
         ),
         tabs: const [
           Tab(text: 'Log in'),
-          Tab(text: 'Create account'),
+          Tab(text: 'Register'),
         ],
       ),
     );

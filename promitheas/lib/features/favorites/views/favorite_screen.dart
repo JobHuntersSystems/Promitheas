@@ -105,10 +105,10 @@ class FavoriteScreen extends ConsumerWidget {
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),
                             gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                              crossAxisCount: 3,
+                              crossAxisCount: 2,
                               crossAxisSpacing: 12,
                               mainAxisSpacing: 12,
-                              childAspectRatio: 0.57,
+                              childAspectRatio: 0.60,
                             ),
                             itemCount: products.length,
                             itemBuilder: (context, index) {

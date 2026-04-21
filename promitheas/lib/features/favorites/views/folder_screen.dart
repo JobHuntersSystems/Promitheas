@@ -98,10 +98,10 @@ class FolderScreen extends ConsumerWidget {
               padding: const EdgeInsets.all(16),
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
+                  crossAxisCount: 2,
                   crossAxisSpacing: 12,
                   mainAxisSpacing: 12,
-                  childAspectRatio: 0.57,
+                   childAspectRatio: 0.60,
                 ),
                 itemCount: favorites.length,
                 itemBuilder: (context, index) {

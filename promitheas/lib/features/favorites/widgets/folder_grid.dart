@@ -30,7 +30,7 @@ class FoldersGrid extends ConsumerWidget {
           crossAxisCount: 3,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 0.85,
+          mainAxisExtent: 128,
         ),
         itemCount: folders.length + 1,
         itemBuilder: (context, index) {
@@ -96,7 +96,7 @@ class FoldersGridLoading extends StatelessWidget {
           crossAxisCount: 3,
           crossAxisSpacing: 10,
           mainAxisSpacing: 10,
-          childAspectRatio: 0.85,
+          mainAxisExtent: 128,
         ),
         itemCount: 6,
         itemBuilder: (_, __) => const FolderCardShimmer(),
