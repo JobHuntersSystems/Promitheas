@@ -4,6 +4,7 @@ import 'package:promitheas/core/theme/app_colors.dart';
 import 'package:promitheas/features/favorites/providers/favorites_provider.dart';
 import 'package:promitheas/features/favorites/repositories/fav_product_repository.dart';
 
+/// Modal para añadir productos favoritos existentes a una carpeta específica.
 class AddToFolderSheet extends ConsumerStatefulWidget {
   const AddToFolderSheet({
     super.key,
@@ -18,10 +19,12 @@ class AddToFolderSheet extends ConsumerStatefulWidget {
   ConsumerState<AddToFolderSheet> createState() => _AddToFolderSheetState();
 }
 
+/// Almacena temporalmente los IDs de favoritos seleccionados por el usuario
 class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
   final Set<int> _selected = {};
   bool _isLoading = false;
 
+// Escucha el provider de productos que no tienen carpeta asignada
   @override
   Widget build(BuildContext context) {
     final allFavoritesAsync = ref.watch(freeProductsProvider);
@@ -59,6 +62,7 @@ class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
               ),
             ),
             const Divider(height: 1),
+            // Cuerpo: Lista de productos o mensaje de vacío
             if (candidates.isEmpty)
               const Expanded(
                 child: Center(child: Text('No favorites to add')),
@@ -109,6 +113,7 @@ class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
                   },
                 ),
               ),
+              // Botón de acción inferior
             Padding(
               padding: EdgeInsets.fromLTRB(
                   16, 8, 16, 16 + MediaQuery.of(context).viewInsets.bottom),
@@ -137,14 +142,16 @@ class _AddToFolderSheetState extends ConsumerState<AddToFolderSheet> {
       },
     );
   }
-
+/// Procesa la lógica de mover los productos seleccionados a la carpeta.
   Future<void> _addSelected() async {
     setState(() => _isLoading = true);
     try {
       final repo = ref.read(favProductRepositoryProvider);
+      // Ejecuta la migración de cada producto seleccionado
       for (final favoriteId in _selected) {
         await repo.moveToFolder(favoriteId, widget.folderId);
       }
+      // Invalida los providers para forzar la actualización de la UI en otras pantallas
       ref.invalidate(folderProductsProvider(widget.folderId));
       ref.invalidate(foldersProvider);
       ref.invalidate(freeProductsProvider);

@@ -101,6 +101,7 @@ class FavoriteScreen extends ConsumerWidget {
                         ),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
+                          //tamaño de las targetas de los productos
                           child: GridView.builder(
                             shrinkWrap: true,
                             physics: const NeverScrollableScrollPhysics(),

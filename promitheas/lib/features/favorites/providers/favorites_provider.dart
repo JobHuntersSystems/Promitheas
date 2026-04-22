@@ -9,6 +9,7 @@ final foldersProvider = FutureProvider<List<FavoriteFolder>>((ref) {
   final repository = ref.read(favFolderRepositoryProvider);
   return repository.getFolders();
 });
+//indica si un producto esta en favoritos o no
 final productFavoriteStateProvider =
     FutureProvider.family<FavoriteProduct?, int>((ref, productId) async {
   final repository = ref.read(favProductRepositoryProvider);
