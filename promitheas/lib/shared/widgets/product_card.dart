@@ -79,44 +79,41 @@ class ProductCard extends StatelessWidget {
                             overflow: TextOverflow.ellipsis,
                             style: theme.textTheme.bodySmall?.copyWith(
                               fontSize: 11,
-                              color: const Color(0xFF8E8E93),
+                              color: const Color.fromARGB(255, 101, 101, 104),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
                         ),
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.end,
-                        children: [
-                          Flexible(
-                            child: Text(
-                              '${product.currentPrice.toStringAsFixed(2)} €',
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: theme.textTheme.titleMedium?.copyWith(
-                                fontSize: 17,
-                                fontWeight: FontWeight.w800,
-                                color: const Color(0xFF111827),
-                              ),
+                     Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          '${product.currentPrice.toStringAsFixed(2)} €',
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontSize: 17,
+                            fontWeight: FontWeight.w700,
+                            color: const Color(0xFF111827),
+                          ),
+                        ),
+
+                        if (product.hasDiscount) ...[
+                          const SizedBox(height: 2),
+                          Text(  
+                            '${product.previousPrice!.toStringAsFixed(2)} €',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              fontSize: 12,
+                              color: const Color(0xFF8E8E93),
+                              decoration: TextDecoration.lineThrough,
+                              decorationColor: const Color(0xFF8E8E93),
                             ),
                           ),
-                          if (product.hasDiscount) ...[
-                            const SizedBox(width: 8),
-                            Flexible(
-                              child: Text(
-                                '${product.previousPrice!.toStringAsFixed(2)} €',
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: theme.textTheme.bodySmall?.copyWith(
-                                  fontSize: 12,
-                                  color: const Color(0xFF8E8E93),
-                                  decoration: TextDecoration.lineThrough,
-                                  decorationColor: const Color(0xFF8E8E93),
-                                ),
-                              ),
-                            ),
-                          ],
                         ],
-                      ),
+                      ],
+                    )
                     ],
                   ),
                 ),
@@ -151,12 +148,12 @@ class _ProductCardImage extends StatelessWidget {
           Container(
             height: imageHeight,
             width: double.infinity,
-            color: const Color(0xFFF6F7FB),
+            color: const Color.fromARGB(255, 255, 255, 255),
             child: imageUrl.trim().isEmpty
                 ? const Center(
                     child: Icon(
                       Icons.image_not_supported_outlined,
-                      color: Color(0xFFC7C7CC),
+                      color: Color.fromARGB(255, 255, 255, 255),
                       size: 30,
                     ),
                   )
@@ -168,13 +165,13 @@ class _ProductCardImage extends StatelessWidget {
                       highlightColor: const Color(0xFFF2F2F7),
                       child: Container(
                         height: imageHeight,
-                        color: const Color(0xFFE5E5EA),
+                        color: const Color.fromARGB(255, 255, 255, 255),
                       ),
                     ),
                     errorWidget: (_, __, ___) => const Center(
                       child: Icon(
                         Icons.image_not_supported_outlined,
-                        color: Color(0xFFC7C7CC),
+                        color: Color.fromARGB(255, 255, 255, 255),
                         size: 30,
                       ),
                     ),

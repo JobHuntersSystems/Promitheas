@@ -31,7 +31,6 @@ class HomeHeader extends StatelessWidget {
               fontSize: 18,
               fontWeight: FontWeight.w800,
               letterSpacing: 1.2,
-              color: Color(0xFF1C1C1E),
             ),
           ),
         ],

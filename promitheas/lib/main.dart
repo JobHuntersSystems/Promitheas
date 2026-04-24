@@ -9,7 +9,6 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
-
 void main() async {
   // Aseguramos que los bindings de Flutter estén listos antes de código asíncrono
   final widgetsBinding = WidgetsFlutterBinding.ensureInitialized();

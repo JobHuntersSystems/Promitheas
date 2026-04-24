@@ -151,7 +151,7 @@ class PriceHistoryChart extends ConsumerWidget {
               lineTouchData: LineTouchData(
                 handleBuiltInTouches: true,
                 touchTooltipData: LineTouchTooltipData(
-                  getTooltipColor: (_) => const Color(0xFF151515),
+                  getTooltipColor: (_) => const Color.fromARGB(255, 36, 36, 36),
                   fitInsideHorizontally: true,
                   fitInsideVertically: true,
                   getTooltipItems: (spots) {
@@ -160,9 +160,9 @@ class PriceHistoryChart extends ConsumerWidget {
                       return LineTooltipItem(
                         '${offer.storeName}\n${spot.y.toStringAsFixed(2)} €',
                         const TextStyle(
-                          color: Colors.white,
                           fontWeight: FontWeight.w700,
                           fontSize: 12,
+                          color: Color.fromARGB(255, 255, 255, 255),
                         ),
                       );
                     }).toList();
@@ -236,7 +236,6 @@ class PriceHistoryChart extends ConsumerWidget {
 
   List<PricePoint> _filterByRange(List<PricePoint> history, ChartRange range) {
     if (history.isEmpty || range == ChartRange.all) return history;
-
     final now = DateTime.now();
     DateTime minDate;
 
@@ -326,7 +325,6 @@ class _LegendItem extends StatelessWidget {
         Text(
           label,
           style: const TextStyle(
-            color: Colors.white,
             fontSize: 13,
             fontWeight: FontWeight.w600,
           ),
