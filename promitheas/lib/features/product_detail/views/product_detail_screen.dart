@@ -12,6 +12,7 @@ import '../widgets/price_history_chart.dart';
 import '../widgets/product_hero_card.dart';
 import '../widgets/store_offer_list.dart';
 import '../widgets/store_selector.dart';
+import '../widgets/store_series_selector.dart';
 
 class ProductDetailScreen extends ConsumerWidget {
   const ProductDetailScreen({
@@ -86,7 +87,7 @@ class ProductDetailScreen extends ConsumerWidget {
 
                         const SizedBox(height: 14),
 
-                        StoreSelector(
+                        StoreSeriesSelector(
                           offers: product.storeOffers,
                           selectedStoreIds: effectiveSelected,
                           onToggleStore: (storeId) {
@@ -114,11 +115,6 @@ class ProductDetailScreen extends ConsumerWidget {
                                 .state = product.storeOffers
                                     .map((e) => e.storeId)
                                     .toSet();
-                          },
-                          onResetToBest: () {
-                            ref
-                                .read(selectedStoreIdsProvider(productId).notifier)
-                                .state = <int>{product.bestStoreId};
                           },
                         ),
 

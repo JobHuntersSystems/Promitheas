@@ -11,6 +11,8 @@ class AppTheme {
         primary: AppColors.primaryFire,
         background: AppColors.backgroundLight,
         surface: AppColors.surfaceLight,
+        onPrimary: Colors.white,
+        onSurface: Colors.black,
       ),
       // Botón: Naranja con texto Blanco (como en tu mockup)
       elevatedButtonTheme: ElevatedButtonThemeData(
@@ -44,6 +46,8 @@ class AppTheme {
         primary: AppColors.primaryFire,
         background: AppColors.backgroundDark,
         surface: AppColors.surfaceDark,
+        onPrimary: Colors.white,
+        onSurface: Colors.white,
       ),
       // Botón: Blanco con texto Naranja (como en tu mockup)
       elevatedButtonTheme: ElevatedButtonThemeData(

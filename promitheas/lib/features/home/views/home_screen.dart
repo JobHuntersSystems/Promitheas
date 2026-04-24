@@ -44,7 +44,7 @@ class HomeScreen extends ConsumerWidget {
 
               SliverToBoxAdapter(
                 child: _HomeSection(
-                  title: 'POPULAR PRODUCTS',
+                  title: 'Popular products',
                   asyncProducts: popularAsync,
                   onProductTap: (id) =>
                       context.go(RouteNames.productDetailPath(id.toString())),
@@ -53,7 +53,7 @@ class HomeScreen extends ConsumerWidget {
 
               SliverToBoxAdapter(
                 child: _HomeSection(
-                  title: 'BEST PRICES',
+                  title: 'Best Prices',
                   asyncProducts: bestPricesAsync,
                   onProductTap: (id) =>
                       context.go(RouteNames.productDetailPath(id.toString())),
@@ -62,7 +62,7 @@ class HomeScreen extends ConsumerWidget {
 
               SliverToBoxAdapter(
                 child: _HomeSection(
-                  title: 'DISCOVERY',
+                  title: 'Discovery',
                   asyncProducts: discoveryAsync,
                   onProductTap: (id) =>
                       context.go(RouteNames.productDetailPath(id.toString())),
