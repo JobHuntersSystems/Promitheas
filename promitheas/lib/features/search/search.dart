@@ -148,7 +148,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         crossAxisCount: 2,
         crossAxisSpacing: 12,
         mainAxisSpacing: 12,
-        childAspectRatio: 0.75,
+        childAspectRatio: 0.65,
       ),
       itemCount: _results!.length,
       itemBuilder: (context, index) {
@@ -269,7 +269,7 @@ class _SearchPlaceholder extends StatelessWidget {
               textAlign: TextAlign.center,
               style: theme.textTheme.titleMedium?.copyWith(
                 fontWeight: FontWeight.w800,
-                color: AppColors.textPrimary,
+                color: AppColors.primaryFire,
               ),
             ),
             const SizedBox(height: 8),
