@@ -11,6 +11,10 @@ import 'package:promitheas/shared/models/product_summary.dart';
 import 'package:promitheas/shared/widgets/page_header.dart';
 import 'package:promitheas/shared/widgets/product_card.dart';
 
+//=============================================================================
+//                            PANTALLA DE BÚSQUEDA
+//==============================================================================
+// Pantalla de búsqueda con resultados en tiempo real y manejo de estados de carga y vacíos.
 class SearchScreen extends ConsumerStatefulWidget {
   const SearchScreen({super.key});
 
@@ -18,14 +22,18 @@ class SearchScreen extends ConsumerStatefulWidget {
   ConsumerState<SearchScreen> createState() => _SearchScreenState();
 }
 
+//=============================================================================
+//                            ESTADO DE LA PANTALLA DE BÚSQUEDA
+//=============================================================================
 class _SearchScreenState extends ConsumerState<SearchScreen> {
-  final _searchController = TextEditingController();
-  List<ProductSummary>? _results;
-  String _input = '';
-  bool _isLoading = false;
-  Timer? _debounce;
-  int _searchRequestId = 0;
+  final _searchController = TextEditingController();  // Controlador del campo de búsqueda  
+  List<ProductSummary>? _results; // Lista de resultados obtenidos de la búsqueda
+  String _input = ''; // Cadena de texto actual en el campo de búsqueda
+  bool _isLoading = false; // Indicador de si se está realizando una búsqueda
+  Timer? _debounce; // Temporizador para implementar debounce en la búsqueda
+  int _searchRequestId = 0; // Identificador incremental para cada solicitud de búsqueda, utilizado para evitar condiciones de carrera
 
+  // Limpia los recursos al desmontar el widget
   @override
   void dispose() {
     _debounce?.cancel();
@@ -33,6 +41,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     super.dispose();
   }
 
+  // Construye la interfaz de usuario de la pantalla de búsqueda
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -41,6 +50,9 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       body: SafeArea(
         child: Column(
           children: [
+            //--------------------------------------------------------
+            //                  Encabezado
+            //--------------------------------------------------------
             const PageHeader(icon: Icons.search_rounded, title: 'SEARCH'),
             Padding(
               padding: const EdgeInsets.fromLTRB(20, 12, 20, 8),
@@ -118,13 +130,15 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
+  // Construye el widget que muestra los resultados de la búsqueda o los estados de carga/vacío
   Widget _buildResults() {
+    // Muestra un indicador de carga mientras se realiza la búsqueda
     if (_isLoading) {
       return const Center(
         child: CircularProgressIndicator(color: AppColors.primaryFire),
       );
     }
-
+    // Muestra un placeholder cuando no hay resultados (estado inicial o después de limpiar la búsqueda)
     if (_results == null) {
       return _SearchPlaceholder(
         icon: Icons.manage_search_rounded,
@@ -133,7 +147,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
             'Start typing to explore products, stores and categories in Promitheas.',
       );
     }
-
+    // Muestra un mensaje cuando la búsqueda no arroja resultados
     if (_results!.isEmpty) {
       return _SearchPlaceholder(
         icon: Icons.search_off_rounded,
@@ -141,7 +155,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
         description: 'Try another term for "$_input".',
       );
     }
-
+    // Muestra la lista de resultados en una cuadrícula
     return GridView.builder(
       padding: const EdgeInsets.fromLTRB(16, 0, 16, 32),
       gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -153,7 +167,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       itemCount: _results!.length,
       itemBuilder: (context, index) {
         final product = _results![index];
-
+        
         return LayoutBuilder(
           builder: (context, constraints) {
             return ProductCard(
@@ -170,6 +184,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     );
   }
 
+  // Maneja los cambios en el campo de búsqueda con debounce para evitar búsquedas excesivas
   Future<void> _onSearchFieldChanged(String value) async {
     _debounce?.cancel();
 
@@ -189,7 +204,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       _performSearch(value);
     });
   }
-
+  // Realiza la búsqueda llamando al repositorio y maneja la respuesta para actualizar el estado de la pantalla
   Future<void> _performSearch(String value) async {
     final requestId = ++_searchRequestId;
 
@@ -209,7 +224,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       _isLoading = false;
     });
   }
-
+  // Limpia el campo de búsqueda y restablece el estado de resultados e indicadores
   void _clearSearch() {
     _debounce?.cancel();
     _searchController.clear();
@@ -219,7 +234,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
       _isLoading = false;
     });
   }
-
+  // Construye el subtítulo que muestra el estado actual de la búsqueda (cargando, sin resultados o número de resultados)
   String _buildSubtitle() {
     if (_isLoading) {
       return 'Searching...';
@@ -232,7 +247,7 @@ class _SearchScreenState extends ConsumerState<SearchScreen> {
     return '${_results!.length} results for "$_input"';
   }
 }
-
+//  Widget para mostrar estados de búsqueda vacíos o sin resultados, con un ícono, título y descripción contextualizados.
 class _SearchPlaceholder extends StatelessWidget {
   const _SearchPlaceholder({
     required this.icon,
