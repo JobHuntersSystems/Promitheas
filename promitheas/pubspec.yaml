@@ -67,6 +67,12 @@ dev_dependencies:
   json_serializable: ^6.13.0
   flutter_launcher_icons: ^0.14.4
 
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/logo.png"
+
+  
 flutter:
 
   # The following line ensures that the Material Icons font is
@@ -79,10 +85,7 @@ flutter:
     - assets/images/logo.png
     - assets/images/transparent.png
     - assets/promitheas_logo.png
-flutter_launcher_icons:
-  android: true
-  ios: true
-  image_path: "assets/images/logo.png"
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
